@@ -17,14 +17,18 @@ import time, threading
 
 def handler(signum, frame):
     raise TimeoutError("SSH connection timed out")
+
 class MainWindow(QMainWindow):
+    display_message_signal = pyqtSignal(str, str)
     def __init__(self):
         super().__init__()
         self.ui=Ui_MainWindow()
         self.ui.setupUi(self)
         self.initUI()
         self.connect_ros()
-        
+        self.display_message_signal.connect(self.display_message_box)
+    def display_message_box(self,title,message):
+        QMessageBox.critical(self,title,message)
     def initUI(self):
         self.node=None
         self.setWindowTitle('ROS Control GUI')
@@ -33,7 +37,6 @@ class MainWindow(QMainWindow):
         self.ros_sim_status=False
         self.ros_controller_status=False
         
-    
     def check_ros_connectivity(self):
         process = subprocess.Popen(['ros2','node', 'list'], stdout=subprocess.PIPE)
         stdout = process.communicate()
@@ -47,7 +50,7 @@ class MainWindow(QMainWindow):
                 self.ui.label_ros_sim_status.setText("Not Running")
                 self.ui.status_icon_ros_sim.setText("X")
                 self.ui.status_icon_ros_sim.setStyleSheet("color:red")
-                QMessageBox.critical(self,"NodeError","Sim node was disconnected")
+                self.display_message_signal.emit("NodeError", "Sim node was disconnected")
                 self.ros_sim_status=False
         if "controller_pub_node" in stdout[0].decode():
             self.ui.label_ros_controller_status.setText("Running")
@@ -59,7 +62,7 @@ class MainWindow(QMainWindow):
                 self.ui.label_ros_controller_status.setText("Not Running")
                 self.ui.status_icon_ros_controller.setText("X")
                 self.ui.status_icon_ros_controller.setStyleSheet("color:red")
-                QMessageBox.critical(self,"NodeError","Controller node was disconnected")
+                self.display_message_signal.emit("NodeError", "Controller node was disconnected")
                 self.ros_controller_status=False
         
         

@@ -33,10 +33,23 @@ class MainWindow(QMainWindow):
         self.node=None
         self.setWindowTitle('ROS Control GUI')
         self.ui.button_init_cams.clicked.connect(self.init_cams)
+        self.ui.radioButton.toggled.connect(self.toggle_lights)
+        self.ui.horizontalSlider.valueChanged.connect(self.toggle_lights)
         self.player = QMediaPlayer()
         self.ros_sim_status=False
         self.ros_controller_status=False
+    
+    def toggle_lights(self):
+        if self.ui.radioButton.isChecked():
+            
+            light_strenght=self.ui.horizontalSlider.value()
+            
+        else:
+            light_strenght=0
+        print(light_strenght)
         
+
+
     def check_ros_connectivity(self):
         process = subprocess.Popen(['ros2','node', 'list'], stdout=subprocess.PIPE)
         stdout = process.communicate()

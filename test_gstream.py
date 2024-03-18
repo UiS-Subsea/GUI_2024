@@ -33,12 +33,45 @@ class MainWindow(QMainWindow):
         self.node=None
         self.setWindowTitle('ROS Control GUI')
         self.ui.button_init_cams.clicked.connect(self.init_cams)
+        self.ui.button_manual.clicked.connect(self.drive_mode)
+        self.ui.button_pipeline.clicked.connect(self.drive_mode)
+        self.ui.button_docking.clicked.connect(self.drive_mode)
         self.ui.radioButton.toggled.connect(self.toggle_lights)
         self.ui.horizontalSlider.valueChanged.connect(self.toggle_lights)
         self.player = QMediaPlayer()
         self.ros_sim_status=False
         self.ros_controller_status=False
+        self.ui.tableWidget.setColumnCount(6)
+        self.ui.tableWidget.setHorizontalHeaderLabels(('P','I','D','Verdi','Mål','Ønsket'))
+        
+        for row in range(6):
+            self.ui.tableWidget.insertRow(row)
+            for col in range(6):
+                item = QTableWidgetItem("")
+                self.ui.tableWidget.setItem(row, col, item)
+        self.ui.tableWidget.setVerticalHeaderLabels(('Pitch','Roll','Yaw','Speed X','Speed y','Speed z'))
+        self.ui.button_regulator.clicked.connect(self.regulator_pid)
+    def regulator_pid(self):
+        print(self.ui.tableWidget.item(0,0).text())
     
+    def drive_mode(self):
+        self.ui.button_manual.setStyleSheet("color:white; background-color:rgb(61, 56, 70)")
+        self.ui.button_pipeline.setStyleSheet("color:white; background-color:rgb(61, 56, 70)")
+        self.ui.button_docking.setStyleSheet("color:white; background-color:rgb(61, 56, 70)")
+        sender=self.sender()
+        sender.setStyleSheet("color:black; background-color:rgb(33, 192, 60)")
+        msg=String()
+        if sender==self.ui.button_manual:
+            msg.data="Manual"
+            
+        if sender==self.ui.button_pipeline:
+            msg.data="Pipeline"
+        if sender==self.ui.button_docking:
+            msg.data="Docking"
+        self.pub.publish(msg)
+        print(msg)
+        
+
     def toggle_lights(self):
         if self.ui.radioButton.isChecked():
             
@@ -96,7 +129,6 @@ class MainWindow(QMainWindow):
     
     def listener_callback(self,msg):
         
-        print(msg.field1)
         self.ui.lcdNumber.display(msg.field1)
         
         

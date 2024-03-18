@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1800</width>
+    <width>1781</width>
     <height>1000</height>
    </rect>
   </property>
@@ -212,6 +212,81 @@ color:white;
          <property name="text">
           <string>Init Nodes</string>
          </property>
+        </widget>
+        <widget class="QFrame" name="frame_9">
+         <property name="geometry">
+          <rect>
+           <x>269</x>
+           <y>60</y>
+           <width>251</width>
+           <height>181</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:rgb(61, 56, 70)</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QLabel" name="label_18">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>10</y>
+            <width>111</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Drive mode</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="button_manual">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>40</y>
+            <width>89</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:rgb(33, 192, 60);
+color:black;</string>
+          </property>
+          <property name="text">
+           <string>Manual</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="button_pipeline">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>80</y>
+            <width>89</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Pipeline</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="button_docking">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>120</y>
+            <width>89</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Docking</string>
+          </property>
+         </widget>
         </widget>
        </widget>
        <widget class="QFrame" name="frame_5">
@@ -503,10 +578,10 @@ color:white;
        <widget class="QFrame" name="frame">
         <property name="geometry">
          <rect>
-          <x>50</x>
-          <y>70</y>
-          <width>571</width>
-          <height>321</height>
+          <x>20</x>
+          <y>40</y>
+          <width>901</width>
+          <height>661</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -518,14 +593,37 @@ color:white;
         <widget class="QLabel" name="label_13">
          <property name="geometry">
           <rect>
-           <x>226</x>
-           <y>20</y>
+           <x>310</x>
+           <y>10</y>
            <width>91</width>
            <height>20</height>
           </rect>
          </property>
          <property name="text">
           <string>Regulator</string>
+         </property>
+        </widget>
+        <widget class="QTableWidget" name="tableWidget">
+         <property name="geometry">
+          <rect>
+           <x>60</x>
+           <y>70</y>
+           <width>821</width>
+           <height>441</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="button_regulator">
+         <property name="geometry">
+          <rect>
+           <x>520</x>
+           <y>570</y>
+           <width>89</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>PushButton</string>
          </property>
         </widget>
        </widget>
@@ -539,7 +637,7 @@ color:white;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1800</width>
+     <width>1781</width>
      <height>22</height>
     </rect>
    </property>

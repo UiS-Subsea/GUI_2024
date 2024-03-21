@@ -1,5 +1,5 @@
 import subprocess
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QPointF
 from PyQt5.QtWidgets import QWidget
 import paramiko
 import sys
@@ -7,7 +7,10 @@ import rclpy
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtMultimedia import *
+from PyQt5.QtGui import QPainter, QPen
 import signal
+import sqlite3
+import math
 
 from std_msgs.msg import String
 from cpp_package.msg import Manipulator
@@ -18,15 +21,78 @@ import time, threading
 def handler(signum, frame):
     raise TimeoutError("SSH connection timed out")
 
+class RobotArmView(QWidget):
+    def __init__(self, parent=None):
+        super(RobotArmView, self).__init__(parent)
+        self.setMinimumSize(400, 400)
+        self.setWindowTitle("Robot Arm")
+        
+        # Joint positions
+        self.joint1_pos = QPointF(200, 200)
+        self.joint2_pos = QPointF(300, 200)
+        self.end_effector_pos = QPointF(400, 200)
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
+        pen = QPen(Qt.black, 2)
+        painter.setPen(pen)
+        
+        # Draw joints
+        painter.drawEllipse(self.joint1_pos, 5, 5)
+        painter.drawEllipse(self.joint2_pos, 5, 5)
+        
+        # Draw arm parts
+        painter.drawLine(self.joint1_pos, self.joint2_pos)
+        painter.drawLine(self.joint2_pos, self.end_effector_pos)
+        painter.drawLine(self.end_effector_pos,self.end_effector_pos+QPoint(15,0))
+
+    def update_arm(self, angle1, angle2):
+        # Calculate end effector position based on joint angles
+        self.end_effector_pos = QPointF(self.joint2_pos.x() + 100 * math.cos(angle1), self.joint2_pos.y() + 100 * math.sin(angle1))
+        self.joint2_pos = QPointF(self.joint1_pos.x() + 100 * math.cos(-angle2), self.joint1_pos.y() + 100 * math.sin(-angle2))
+        self.update()
+
 class MainWindow(QMainWindow):
     display_message_signal = pyqtSignal(str, str)
     def __init__(self):
         super().__init__()
         self.ui=Ui_MainWindow()
         self.ui.setupUi(self)
-        self.initUI()
+        self.ros_sim_status=False
+        self.ros_controller_status=False
+        self.trip_id=None
+        self.logtest1=0
+        self.logtest2=0
+        self.logtest3=0
+        self.robot_arm_view = RobotArmView()
         self.connect_ros()
         self.display_message_signal.connect(self.display_message_box)
+        self.con=sqlite3.connect('rov_logs.db')
+        self.c = self.con.cursor()
+        self.log_timer = QTimer(self)  # Create QTimer object
+        self.log_timer.timeout.connect(self.log_data)  # Connect timeout signal to log_data method
+        self.log_timer.start(1000) 
+
+        # Create table if not exists
+        self.c.execute('''CREATE TABLE IF NOT EXISTS rov_trips
+                    (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    start_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    end_timestamp TIMESTAMP,
+                    UNIQUE(start_timestamp))''')
+        self.c.execute('''CREATE TABLE IF NOT EXISTS rov_logs
+                    (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    trip_id INTEGER,
+                    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    temp_1 REAL,
+                    temp_2 REAL,
+                    temp_3 REAL,
+                    temp_4 REAL,
+                    temp_5 REAL,
+                    pressure REAL,
+                    leakage STRING)''')
+        self.con.commit()
+        self.initUI()
     def display_message_box(self,title,message):
         QMessageBox.critical(self,title,message)
     def initUI(self):
@@ -36,13 +102,22 @@ class MainWindow(QMainWindow):
         self.ui.button_manual.clicked.connect(self.drive_mode)
         self.ui.button_pipeline.clicked.connect(self.drive_mode)
         self.ui.button_docking.clicked.connect(self.drive_mode)
+        self.ui.button_logger.clicked.connect(self.start_logging)
         self.ui.radioButton.toggled.connect(self.toggle_lights)
         self.ui.horizontalSlider.valueChanged.connect(self.toggle_lights)
         self.player = QMediaPlayer()
-        self.ros_sim_status=False
-        self.ros_controller_status=False
         self.ui.tableWidget.setColumnCount(6)
         self.ui.tableWidget.setHorizontalHeaderLabels(('P','I','D','Verdi','Mål','Ønsket'))
+        self.ui.tableWidget_2.setColumnCount(8)  # Adjust column count as per your database structure
+        self.ui.tableWidget_2.setHorizontalHeaderLabels(['Timestamp', 'temp1','temp2','temp3','temp4','temp5','pressure','leakage'])  # Set column headers
+        self.populate_trip_combobox()  # Populate trip combo box initially
+        self.ui.comboBox.currentIndexChanged.connect(self.display_trip)  # Connect combo box index change event
+        layout = QVBoxLayout()
+        layout.addWidget(self.robot_arm_view)
+        
+        self.ui.widget.setLayout(layout)
+        self.ui.horizontalSlider_2.valueChanged.connect(self.update_arm)
+        self.ui.horizontalSlider_3.valueChanged.connect(self.update_arm)
         
         for row in range(6):
             self.ui.tableWidget.insertRow(row)
@@ -54,6 +129,11 @@ class MainWindow(QMainWindow):
     def regulator_pid(self):
         print(self.ui.tableWidget.item(0,0).text())
     
+
+    def update_arm(self):
+        angle1 = math.radians(self.ui.horizontalSlider_2.value())  # Convert slider value to radians
+        angle2 = math.radians(self.ui.horizontalSlider_3.value())  # Convert slider value to radians
+        self.robot_arm_view.update_arm(angle1, angle2)
     def drive_mode(self):
         self.ui.button_manual.setStyleSheet("color:white; background-color:rgb(61, 56, 70)")
         self.ui.button_pipeline.setStyleSheet("color:white; background-color:rgb(61, 56, 70)")
@@ -69,15 +149,62 @@ class MainWindow(QMainWindow):
         if sender==self.ui.button_docking:
             msg.data="Docking"
         self.pub.publish(msg)
-        print(msg)
         
-
+        
+    def start_logging(self):
+        if self.trip_id is None:  # Start new trip
+            self.c.execute('''INSERT INTO rov_trips DEFAULT VALUES''')
+            self.con.commit()
+            self.trip_id = self.c.lastrowid
+            self.ui.button_logger.setText('Stop Logger')
+            print("Trip started. Trip ID:", self.trip_id)
+        else:  # End current trip
+            self.c.execute('''UPDATE rov_trips SET end_timestamp = CURRENT_TIMESTAMP WHERE id = ?''', (self.trip_id,))
+            self.con.commit()
+            self.trip_id = None
+            self.ui.button_logger.setText('Start Logger')
+            
+            print("Trip ended.")
+    def log_data(self):
+        if self.trip_id is not None:
+            value=self.ui.lcdNumber.value()
+            if value>0.6:
+                test='Sensor 1'
+            elif value>0.2:
+                test='Sensor 2'
+            elif value>-0.2:
+                test='sensor 3'
+            else:
+                test='sensor 4'
+            self.c.execute('''INSERT INTO rov_logs (trip_id, leakage) VALUES (?, ?)''', (self.trip_id, test))
+            self.con.commit()
+            self.populate_trip_combobox()
+            self.display_trip()
+    
+    def populate_trip_combobox(self):
+        self.ui.comboBox.clear()
+        self.c.execute('''SELECT id, start_timestamp FROM rov_trips''')
+        trips = self.c.fetchall()
+        for trip in trips:
+            self.ui.comboBox.addItem(f'Trip {trip[0]} ({trip[1]})')       
+    def display_trip(self):
+        selected_index = self.ui.comboBox.currentIndex()
+        if selected_index >= 0:
+            trip_id = selected_index + 1  # Trip ID starts from 1, while combo box index starts from 0
+            self.c.execute('''SELECT * FROM rov_logs WHERE trip_id = ?''', (trip_id,))
+            rows = self.c.fetchall()
+            self.ui.tableWidget_2.setRowCount(len(rows))  # Set row count based on database content
+            for i, row in enumerate(rows):
+                for j, value in enumerate(row[2:], start=2):
+                    item = QTableWidgetItem(str(value))
+                    self.ui.tableWidget_2.setItem(i, j-2, item) 
     def toggle_lights(self):
         if self.ui.radioButton.isChecked():
-            
+            self.ui.radioButton.setText("Turn Off")
             light_strenght=self.ui.horizontalSlider.value()
             
         else:
+            self.ui.radioButton.setText("Turn On")
             light_strenght=0
         print(light_strenght)
         
@@ -135,10 +262,12 @@ class MainWindow(QMainWindow):
         
 
     def closeEvent(self,event):
-        self.node.destroy_node()
-        self.node=None
-        rclpy.shutdown()
-        self.ros_running=False
+        if self.node:
+            self.node.destroy_node()
+            self.node=None
+            rclpy.shutdown()
+            self.ros_running=False
+        self.con.close()
         event.accept()
     
     

@@ -13,7 +13,7 @@ import sqlite3
 import math
 
 from std_msgs.msg import String
-from cpp_package.msg import Manipulator
+from cpp_package.msg import Manipulator, ReguleringPID
 from MainWindow import Ui_MainWindow
 from rclpy.node import Node
 import time, threading
@@ -122,14 +122,45 @@ class MainWindow(QMainWindow):
         for row in range(6):
             self.ui.tableWidget.insertRow(row)
             for col in range(6):
-                item = QTableWidgetItem("")
+                item = QTableWidgetItem("0")
                 self.ui.tableWidget.setItem(row, col, item)
         self.ui.tableWidget.setVerticalHeaderLabels(('Pitch','Roll','Yaw','Speed X','Speed y','Speed z'))
         self.ui.button_regulator.clicked.connect(self.regulator_pid)
     def regulator_pid(self):
         print(self.ui.tableWidget.item(0,0).text())
-    
+        for row in range(self.ui.tableWidget.rowCount()):
+            item = self.ui.tableWidget.item(row, 5)  # Get item from first column
+            if item is not None:
+                # Set the text of the corresponding item in the second column
+                self.ui.tableWidget.setItem(row, 4, item.clone())
+                self.ui.tableWidget.setItem(row,5,None)
+        msg=ReguleringPID()
+        
+        msg.pitch_p=float(self.ui.tableWidget.item(0,0).text())
+        msg.pitch_i=float(self.ui.tableWidget.item(0,1).text())
+        msg.pitch_d=float(self.ui.tableWidget.item(0,2).text())
+        msg.roll_p=float(self.ui.tableWidget.item(1,0).text())
+        msg.roll_i=float(self.ui.tableWidget.item(1,1).text())
+        msg.roll_d=float(self.ui.tableWidget.item(1,2).text())
+        msg.yaw_p=float(self.ui.tableWidget.item(2,0).text())
+        msg.yaw_i=float(self.ui.tableWidget.item(2,1).text())
+        msg.yaw_d=float(self.ui.tableWidget.item(2,2).text())
+        msg.x_p=float(self.ui.tableWidget.item(3,0).text())
+        msg.x_i=float(self.ui.tableWidget.item(3,1).text())
+        msg.x_d=float(self.ui.tableWidget.item(3,2).text())
+        msg.y_p=float(self.ui.tableWidget.item(4,0).text())
+        msg.y_i=float(self.ui.tableWidget.item(4,1).text())
+        msg.y_d=float(self.ui.tableWidget.item(4,2).text())
+        msg.z_p=float(self.ui.tableWidget.item(5,0).text())
+        msg.z_i=float(self.ui.tableWidget.item(5,1).text())
+        msg.z_d=float(self.ui.tableWidget.item(5,2).text())
 
+        self.pub_pid.publish(msg)
+
+
+
+    
+    #only for testing / convert to a callback for angle topic
     def update_arm(self):
         angle1 = math.radians(self.ui.horizontalSlider_2.value())  # Convert slider value to radians
         angle2 = math.radians(self.ui.horizontalSlider_3.value())  # Convert slider value to radians
@@ -148,7 +179,7 @@ class MainWindow(QMainWindow):
             msg.data="Pipeline"
         if sender==self.ui.button_docking:
             msg.data="Docking"
-        self.pub.publish(msg)
+        self.pub_mode.publish(msg)
         
         
     def start_logging(self):
@@ -248,7 +279,8 @@ class MainWindow(QMainWindow):
         self.node = Node('gui_node')
         self.ros_running=True
         self.check_ros_connectivity()
-        self.pub=self.node.create_publisher(String,'mode_control',10)
+        self.pub_mode=self.node.create_publisher(String,'mode_control',10)
+        self.pub_pid=self.node.create_publisher(ReguleringPID,'pid',10)
         self.sub=self.node.create_subscription(Manipulator,'sim_data',self.listener_callback,10)
         ros_thread=threading.Thread(target=rclpy.spin, args=(self.node,), daemon=True)
         ros_thread.start()

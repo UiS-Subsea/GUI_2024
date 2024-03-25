@@ -719,8 +719,8 @@ color:black;</string>
        <widget class="QSlider" name="horizontalSlider_2">
         <property name="geometry">
          <rect>
-          <x>500</x>
-          <y>610</y>
+          <x>490</x>
+          <y>640</y>
           <width>101</width>
           <height>16</height>
          </rect>
@@ -735,8 +735,8 @@ color:black;</string>
        <widget class="QSlider" name="horizontalSlider_3">
         <property name="geometry">
          <rect>
-          <x>500</x>
-          <y>640</y>
+          <x>480</x>
+          <y>610</y>
           <width>81</width>
           <height>16</height>
          </rect>

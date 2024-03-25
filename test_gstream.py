@@ -1,3 +1,4 @@
+
 import subprocess
 from PyQt5.QtCore import Qt, QPointF
 from PyQt5.QtWidgets import QWidget
@@ -28,14 +29,14 @@ class RobotArmView(QWidget):
         self.setWindowTitle("Robot Arm")
         
         # Joint positions
-        self.joint1_pos = QPointF(200, 200)
-        self.joint2_pos = QPointF(300, 200)
-        self.end_effector_pos = QPointF(400, 200)
+        self.joint1_pos = QPointF(200, 150)
+        self.joint2_pos = QPointF(300, 150)
+        self.end_effector_pos = QPointF(400, 150)
 
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
-        pen = QPen(Qt.black, 2)
+        pen = QPen(Qt.white, 2)
         painter.setPen(pen)
         
         # Draw joints
@@ -103,8 +104,9 @@ class MainWindow(QMainWindow):
         self.ui.button_pipeline.clicked.connect(self.drive_mode)
         self.ui.button_docking.clicked.connect(self.drive_mode)
         self.ui.button_logger.clicked.connect(self.start_logging)
-        self.ui.radioButton.toggled.connect(self.toggle_lights)
+        self.ui.button_light.clicked.connect(self.toggle_lights)
         self.ui.horizontalSlider.valueChanged.connect(self.toggle_lights)
+        self.ui.horizontalSlider.setVisible(False)
         self.player = QMediaPlayer()
         self.ui.tableWidget.setColumnCount(6)
         self.ui.tableWidget.setHorizontalHeaderLabels(('P','I','D','Verdi','Mål','Ønsket'))
@@ -127,7 +129,6 @@ class MainWindow(QMainWindow):
         self.ui.tableWidget.setVerticalHeaderLabels(('Pitch','Roll','Yaw','Speed X','Speed y','Speed z'))
         self.ui.button_regulator.clicked.connect(self.regulator_pid)
     def regulator_pid(self):
-        print(self.ui.tableWidget.item(0,0).text())
         for row in range(self.ui.tableWidget.rowCount()):
             item = self.ui.tableWidget.item(row, 5)  # Get item from first column
             if item is not None:
@@ -135,7 +136,7 @@ class MainWindow(QMainWindow):
                 self.ui.tableWidget.setItem(row, 4, item.clone())
                 self.ui.tableWidget.setItem(row,5,None)
         msg=ReguleringPID()
-        
+
         msg.pitch_p=float(self.ui.tableWidget.item(0,0).text())
         msg.pitch_i=float(self.ui.tableWidget.item(0,1).text())
         msg.pitch_d=float(self.ui.tableWidget.item(0,2).text())
@@ -166,11 +167,11 @@ class MainWindow(QMainWindow):
         angle2 = math.radians(self.ui.horizontalSlider_3.value())  # Convert slider value to radians
         self.robot_arm_view.update_arm(angle1, angle2)
     def drive_mode(self):
-        self.ui.button_manual.setStyleSheet("color:white; background-color:rgb(61, 56, 70)")
-        self.ui.button_pipeline.setStyleSheet("color:white; background-color:rgb(61, 56, 70)")
-        self.ui.button_docking.setStyleSheet("color:white; background-color:rgb(61, 56, 70)")
+        self.ui.button_manual.setStyleSheet(" background-color:rgb(21, 21, 39)")
+        self.ui.button_pipeline.setStyleSheet(" background-color:rgb(21, 21, 39)")
+        self.ui.button_docking.setStyleSheet("background-color:rgb(21, 21, 39)")
         sender=self.sender()
-        sender.setStyleSheet("color:black; background-color:rgb(33, 192, 60)")
+        sender.setStyleSheet(" background-color:green")
         msg=String()
         if sender==self.ui.button_manual:
             msg.data="Manual"
@@ -188,17 +189,19 @@ class MainWindow(QMainWindow):
             self.con.commit()
             self.trip_id = self.c.lastrowid
             self.ui.button_logger.setText('Stop Logger')
+            self.ui.button_logger.setStyleSheet("background-color:red;")
             print("Trip started. Trip ID:", self.trip_id)
         else:  # End current trip
             self.c.execute('''UPDATE rov_trips SET end_timestamp = CURRENT_TIMESTAMP WHERE id = ?''', (self.trip_id,))
             self.con.commit()
             self.trip_id = None
             self.ui.button_logger.setText('Start Logger')
+            self.ui.button_logger.setStyleSheet("background-color:green;")
             
             print("Trip ended.")
     def log_data(self):
         if self.trip_id is not None:
-            value=self.ui.lcdNumber.value()
+            value=float(self.ui.thruster_1.text())
             if value>0.6:
                 test='Sensor 1'
             elif value>0.2:
@@ -230,12 +233,16 @@ class MainWindow(QMainWindow):
                     item = QTableWidgetItem(str(value))
                     self.ui.tableWidget_2.setItem(i, j-2, item) 
     def toggle_lights(self):
-        if self.ui.radioButton.isChecked():
-            self.ui.radioButton.setText("Turn Off")
+        if self.ui.button_light.isChecked():
+            self.ui.button_light.setText("On")
+            self.ui.button_light.setStyleSheet("background-color:green;")
+            self.ui.horizontalSlider.setVisible(True)
             light_strenght=self.ui.horizontalSlider.value()
             
         else:
-            self.ui.radioButton.setText("Turn On")
+            self.ui.button_light.setText("Off")
+            self.ui.button_light.setStyleSheet("background-color:red;")
+            self.ui.horizontalSlider.setVisible(False)
             light_strenght=0
         print(light_strenght)
         
@@ -288,7 +295,7 @@ class MainWindow(QMainWindow):
     
     def listener_callback(self,msg):
         
-        self.ui.lcdNumber.display(msg.field1)
+        self.ui.thruster_1.setText(msg.field1)
         
         
         
@@ -297,16 +304,18 @@ class MainWindow(QMainWindow):
         if self.node:
             self.node.destroy_node()
             self.node=None
+            rclpy.Executor.shutdown()
             rclpy.shutdown()
-            self.ros_running=False
+        self.ros_running=False
         self.con.close()
         event.accept()
     
     
     def init_cams(self):
+        
         ssh_client = paramiko.SSHClient()
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
+        
         try:
             signal.signal(signal.SIGALRM, handler)
             signal.alarm(5) 
@@ -326,10 +335,12 @@ class MainWindow(QMainWindow):
         except TimeoutError:
             print("SSH connection timed out")
             QMessageBox.critical(self,"TimeOutError","SSH connection timed out")
+            
         
         except Exception as e:
             print(f"Error: {e}")
             QMessageBox.critical(f"Error: {e}")
+            
             
         finally:
             # Close the SSH connection

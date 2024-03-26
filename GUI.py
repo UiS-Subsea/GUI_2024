@@ -8,12 +8,13 @@ import rclpy
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtMultimedia import *
-from PyQt5.QtGui import QPainter, QPen
+from PyQt5.QtGui import QPainter, QPen, QTransform
 import signal
 import sqlite3
 import math
 
 from std_msgs.msg import String
+from geometry_msgs.msg import Twist
 from cpp_package.msg import Manipulator, ReguleringPID
 from MainWindow import Ui_MainWindow
 from rclpy.node import Node
@@ -26,32 +27,49 @@ class RobotArmView(QWidget):
     def __init__(self, parent=None):
         super(RobotArmView, self).__init__(parent)
         self.setMinimumSize(400, 400)
-        self.setWindowTitle("Robot Arm")
+        self.setWindowTitle("ROV with Robot Arm")
         
-        # Joint positions
-        self.joint1_pos = QPointF(200, 150)
-        self.joint2_pos = QPointF(300, 150)
-        self.end_effector_pos = QPointF(400, 150)
+        # Define dimensions of the ROV box
+        self.rov_width = 100
+        self.rov_height = 50
+        
+        # Joint positions relative to the ROV
+        self.joint1_pos = QPointF(100, 30)
+        self.joint2_pos = QPointF(150,30)
+        self.end_effector_pos = QPointF(200,30)
+        
+        # Pitch angle of the ROV (in degrees)
+        self.pitch_angle = 30
 
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
-        pen = QPen(Qt.white, 2)
-        painter.setPen(pen)
         
-        # Draw joints
-        painter.drawEllipse(self.joint1_pos, 5, 5)
-        painter.drawEllipse(self.joint2_pos, 5, 5)
         
-        # Draw arm parts
-        painter.drawLine(self.joint1_pos, self.joint2_pos)
-        painter.drawLine(self.joint2_pos, self.end_effector_pos)
-        painter.drawLine(self.end_effector_pos,self.end_effector_pos+QPoint(15,0))
+        painter.translate(200, 100)
+        painter.rotate(self.pitch_angle)
+        painter.translate(-50, -25)  # Adjust position so that the center of the box is at the origin
+
+        # Draw the rotated box
+        rect = QRectF(0, 0, self.rov_width, self.rov_height)
+        painter.setBrush(Qt.blue)
+        painter.setPen(QPen(Qt.black, 2))
+        painter.drawRect(rect)
+
+        # Draw joints and arm parts relative to ROV
+        painter.drawEllipse(self.joint1_pos , 5, 5)
+        painter.drawEllipse(self.joint2_pos , 5, 5)
+        painter.drawLine(self.joint1_pos , self.joint2_pos )
+        painter.drawLine(self.joint2_pos , self.end_effector_pos )
+        painter.drawLine(self.end_effector_pos , self.end_effector_pos )
 
     def update_arm(self, angle1, angle2):
         # Calculate end effector position based on joint angles
-        self.end_effector_pos = QPointF(self.joint2_pos.x() + 100 * math.cos(angle1), self.joint2_pos.y() + 100 * math.sin(angle1))
-        self.joint2_pos = QPointF(self.joint1_pos.x() + 100 * math.cos(-angle2), self.joint1_pos.y() + 100 * math.sin(-angle2))
+        self.end_effector_pos = QPointF(self.joint2_pos.x() + 50 * math.cos(angle1), self.joint2_pos.y() + 50 * math.sin(angle1))
+        self.joint2_pos = QPointF(self.joint1_pos.x() + 50 * math.cos(-angle2), self.joint1_pos.y() + 50 * math.sin(-angle2))
+        self.update()
+    def setRotation(self, angle):
+        self.pitch_angle = angle
         self.update()
 
 class MainWindow(QMainWindow):
@@ -67,6 +85,7 @@ class MainWindow(QMainWindow):
         self.logtest2=0
         self.logtest3=0
         self.robot_arm_view = RobotArmView()
+        
         self.connect_ros()
         self.display_message_signal.connect(self.display_message_box)
         self.con=sqlite3.connect('rov_logs.db')
@@ -115,7 +134,7 @@ class MainWindow(QMainWindow):
         self.populate_trip_combobox()  # Populate trip combo box initially
         self.ui.comboBox.currentIndexChanged.connect(self.display_trip)  # Connect combo box index change event
         layout = QVBoxLayout()
-        layout.addWidget(self.robot_arm_view)
+        layout.addWidget(self.robot_arm_view,stretch=1)
         
         self.ui.widget.setLayout(layout)
         self.ui.horizontalSlider_2.valueChanged.connect(self.update_arm)
@@ -289,6 +308,7 @@ class MainWindow(QMainWindow):
         self.pub_mode=self.node.create_publisher(String,'mode_control',10)
         self.pub_pid=self.node.create_publisher(ReguleringPID,'pid',10)
         self.sub=self.node.create_subscription(Manipulator,'sim_data',self.listener_callback,10)
+        self.sub_test_rotation=self.node.create_subscription(Twist,'ROV_movement',self.callback,10)
         ros_thread=threading.Thread(target=rclpy.spin, args=(self.node,), daemon=True)
         ros_thread.start()
         
@@ -296,7 +316,9 @@ class MainWindow(QMainWindow):
     def listener_callback(self,msg):
         
         self.ui.thruster_1.setText(msg.field1)
-        
+    
+    def callback(self,msg):
+        self.robot_arm_view.setRotation(msg.angular.y)
         
         
 

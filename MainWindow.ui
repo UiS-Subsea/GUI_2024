@@ -49,9 +49,11 @@ color:white;
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color:rgb(21, 21, 39);
+         <string notr="true">QFrame{background-color:rgb(23, 27, 48);
 border-radius: 15px; 
-border: 2px solid white;</string>
+border: 2px solid rgb(99, 102, 108);}
+
+QLabel{ background-color:rgb(21,21,39);}</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -75,6 +77,9 @@ border: 2px solid white;</string>
            <bold>true</bold>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <property name="text">
           <string>Temperatur og pådrag</string>
          </property>
@@ -86,13 +91,14 @@ border: 2px solid white;</string>
          <property name="geometry">
           <rect>
            <x>280</x>
-           <y>620</y>
+           <y>610</y>
            <width>121</width>
            <height>51</height>
           </rect>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color:green;</string>
+          <string notr="true">background-color:green;
+border-radius:15px;</string>
          </property>
          <property name="text">
           <string>Start logging</string>
@@ -236,8 +242,7 @@ border: 2px solid green;
           <enum>Qt::LeftToRight</enum>
          </property>
          <property name="styleSheet">
-          <string notr="true">
-</string>
+          <string notr="true"/>
          </property>
          <property name="text">
           <string>0</string>
@@ -390,9 +395,9 @@ border: 2px solid green;
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color:rgb(21, 21, 39);
+         <string notr="true">background-color:rgb(23, 27, 48);
 border-radius: 15px; 
-border: 2px solid white;</string>
+border: 2px solid rgb(99, 102, 108);</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -416,6 +421,9 @@ border: 2px solid white;</string>
            <bold>true</bold>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:rgb(21,21,39);</string>
+         </property>
          <property name="text">
           <string>Control Panel</string>
          </property>
@@ -433,7 +441,8 @@ border: 2px solid white;</string>
           </rect>
          </property>
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">background-color:rgb(21,21,39);
+</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -519,7 +528,7 @@ color:white
           </rect>
          </property>
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">background-color:rgb(21,21,39);</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -565,6 +574,9 @@ color:white
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
+          <property name="invertedControls">
+           <bool>false</bool>
+          </property>
          </widget>
          <widget class="QPushButton" name="button_light">
           <property name="geometry">
@@ -598,7 +610,7 @@ color:white
          <property name="styleSheet">
           <string notr="true">QFrame{background-color:rgb(21, 21, 39);
 border-radius: 15px; 
-border: 2px solid white;}
+border: 2px solid rgb(99, 102, 108);}
 
 QLabel{border:none}</string>
          </property>
@@ -631,7 +643,8 @@ QLabel{border:none}</string>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">border:none;</string>
+           <string notr="true">border:none;
+background-color:rgb(23, 27, 48)</string>
           </property>
           <property name="value">
            <number>24</number>
@@ -707,9 +720,9 @@ QLabel{border:none}</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">QFrame{background-color:rgb(21, 21, 39);
+         <string notr="true">QFrame{background-color:rgb(23, 27, 48);
 border-radius: 15px; 
-border: 2px solid white;}
+border: 2px solid rgb(99, 102, 108);}
 QLabel{border:none;}
 
 </string>
@@ -858,7 +871,8 @@ QLabel{border:none;}
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">border:2px solid white;</string>
+          <string notr="true">border:2px solid rgb(99, 102, 108);
+background-color:rgb(21,21,39);</string>
          </property>
          <property name="text">
           <string>Connections</string>
@@ -893,7 +907,7 @@ QLabel{border:none;}
         <property name="styleSheet">
          <string notr="true">background-color:rgb(21, 21, 39);
 border-radius: 15px; 
-border: 2px solid white;</string>
+border: 2px solid rgb(99, 102, 108);</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -937,7 +951,7 @@ border: 2px solid white;</string>
         <property name="styleSheet">
          <string notr="true">background-color:rgb(21, 21, 39);
 border-radius: 15px; 
-border: 2px solid white;</string>
+border: 2px solid rgb(99, 102, 108);</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -1008,44 +1022,6 @@ border: 2px solid white;</string>
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="widget" native="true">
-        <property name="geometry">
-         <rect>
-          <x>700</x>
-          <y>630</y>
-          <width>541</width>
-          <height>291</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color:rgb(21, 21, 39);
-border-radius: 15px; 
-border: 2px solid white;</string>
-        </property>
-        <widget class="QLabel" name="label_21">
-         <property name="geometry">
-          <rect>
-           <x>170</x>
-           <y>20</y>
-           <width>181</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>13</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Manipulator</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </widget>
        <widget class="QSlider" name="horizontalSlider_2">
         <property name="geometry">
          <rect>
@@ -1078,6 +1054,63 @@ border: 2px solid white;</string>
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
+       <widget class="QFrame" name="frame_11">
+        <property name="geometry">
+         <rect>
+          <x>700</x>
+          <y>620</y>
+          <width>541</width>
+          <height>311</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:rgb(21, 21, 39);
+border-radius: 15px; 
+border: 2px solid rgb(99, 102, 108);</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QWidget" name="widget" native="true">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>70</y>
+           <width>521</width>
+           <height>221</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_21">
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>20</y>
+           <width>181</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>13</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Manipulator</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -1093,9 +1126,9 @@ border: 2px solid white;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color:rgb(21, 21, 39);
+         <string notr="true">background-color:rgb(23, 27, 48);
 border-radius: 15px; 
-border: 2px solid white;</string>
+border: 2px solid rgb(99, 102, 108);</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -1119,6 +1152,9 @@ border: 2px solid white;</string>
            <bold>true</bold>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:rgb(21,21,39)</string>
+         </property>
          <property name="text">
           <string>Regulator</string>
          </property>
@@ -1136,7 +1172,8 @@ border: 2px solid white;</string>
           </rect>
          </property>
          <property name="styleSheet">
-          <string notr="true">border:none;</string>
+          <string notr="true">border:none;
+</string>
          </property>
         </widget>
         <widget class="QPushButton" name="button_regulator">
@@ -1168,7 +1205,7 @@ border: 2px solid white;</string>
         <property name="styleSheet">
          <string notr="true">background-color:rgb(21, 21, 39);
 border-radius: 15px; 
-border: 2px solid white;</string>
+border: 2px solid rgb(99, 102, 108);</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>

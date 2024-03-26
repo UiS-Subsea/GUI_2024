@@ -31,9 +31,11 @@ class Ui_MainWindow(object):
         self.tab.setObjectName("tab")
         self.frame_2 = QtWidgets.QFrame(self.tab)
         self.frame_2.setGeometry(QtCore.QRect(0, 0, 691, 681))
-        self.frame_2.setStyleSheet("background-color:rgb(21, 21, 39);\n"
+        self.frame_2.setStyleSheet("QFrame{background-color:rgb(23, 27, 48);\n"
 "border-radius: 15px; \n"
-"border: 2px solid white;")
+"border: 2px solid rgb(99, 102, 108);}\n"
+"\n"
+"QLabel{ background-color:rgb(21,21,39);}")
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
@@ -44,11 +46,13 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.label_2.setFont(font)
+        self.label_2.setStyleSheet("")
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setObjectName("label_2")
         self.button_logger = QtWidgets.QPushButton(self.frame_2)
-        self.button_logger.setGeometry(QtCore.QRect(280, 620, 121, 51))
-        self.button_logger.setStyleSheet("background-color:green;")
+        self.button_logger.setGeometry(QtCore.QRect(280, 610, 121, 51))
+        self.button_logger.setStyleSheet("background-color:green;\n"
+"border-radius:15px;")
         self.button_logger.setObjectName("button_logger")
         self.temp_1 = QtWidgets.QLabel(self.frame_2)
         self.temp_1.setGeometry(QtCore.QRect(280, 240, 111, 31))
@@ -98,8 +102,7 @@ class Ui_MainWindow(object):
         self.thruster_1 = QtWidgets.QLabel(self.frame_2)
         self.thruster_1.setGeometry(QtCore.QRect(50, 100, 61, 41))
         self.thruster_1.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.thruster_1.setStyleSheet("\n"
-"")
+        self.thruster_1.setStyleSheet("")
         self.thruster_1.setAlignment(QtCore.Qt.AlignCenter)
         self.thruster_1.setObjectName("thruster_1")
         self.thruster_5 = QtWidgets.QLabel(self.frame_2)
@@ -139,9 +142,9 @@ class Ui_MainWindow(object):
         self.thruster_8.setObjectName("thruster_8")
         self.frame_6 = QtWidgets.QFrame(self.tab)
         self.frame_6.setGeometry(QtCore.QRect(1250, 0, 571, 531))
-        self.frame_6.setStyleSheet("background-color:rgb(21, 21, 39);\n"
+        self.frame_6.setStyleSheet("background-color:rgb(23, 27, 48);\n"
 "border-radius: 15px; \n"
-"border: 2px solid white;")
+"border: 2px solid rgb(99, 102, 108);")
         self.frame_6.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_6.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_6.setObjectName("frame_6")
@@ -152,11 +155,13 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.label_8.setFont(font)
+        self.label_8.setStyleSheet("background-color:rgb(21,21,39);")
         self.label_8.setAlignment(QtCore.Qt.AlignCenter)
         self.label_8.setObjectName("label_8")
         self.frame_9 = QtWidgets.QFrame(self.frame_6)
         self.frame_9.setGeometry(QtCore.QRect(280, 90, 271, 221))
-        self.frame_9.setStyleSheet("")
+        self.frame_9.setStyleSheet("background-color:rgb(21,21,39);\n"
+"")
         self.frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_9.setObjectName("frame_9")
@@ -183,7 +188,7 @@ class Ui_MainWindow(object):
         self.button_docking.setObjectName("button_docking")
         self.frame_7 = QtWidgets.QFrame(self.frame_6)
         self.frame_7.setGeometry(QtCore.QRect(280, 320, 271, 171))
-        self.frame_7.setStyleSheet("")
+        self.frame_7.setStyleSheet("background-color:rgb(21,21,39);")
         self.frame_7.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_7.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_7.setObjectName("frame_7")
@@ -200,6 +205,7 @@ class Ui_MainWindow(object):
         self.horizontalSlider.setGeometry(QtCore.QRect(70, 120, 160, 16))
         self.horizontalSlider.setStyleSheet("border:none;")
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
+        self.horizontalSlider.setInvertedControls(False)
         self.horizontalSlider.setObjectName("horizontalSlider")
         self.button_light = QtWidgets.QPushButton(self.frame_7)
         self.button_light.setGeometry(QtCore.QRect(90, 70, 91, 31))
@@ -210,7 +216,7 @@ class Ui_MainWindow(object):
         self.frame_8.setGeometry(QtCore.QRect(20, 90, 251, 221))
         self.frame_8.setStyleSheet("QFrame{background-color:rgb(21, 21, 39);\n"
 "border-radius: 15px; \n"
-"border: 2px solid white;}\n"
+"border: 2px solid rgb(99, 102, 108);}\n"
 "\n"
 "QLabel{border:none}")
         self.frame_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -221,7 +227,8 @@ class Ui_MainWindow(object):
         self.label_14.setObjectName("label_14")
         self.progressBar = QtWidgets.QProgressBar(self.frame_8)
         self.progressBar.setGeometry(QtCore.QRect(130, 40, 95, 25))
-        self.progressBar.setStyleSheet("border:none;")
+        self.progressBar.setStyleSheet("border:none;\n"
+"background-color:rgb(23, 27, 48)")
         self.progressBar.setProperty("value", 24)
         self.progressBar.setObjectName("progressBar")
         self.label_15 = QtWidgets.QLabel(self.frame_8)
@@ -240,9 +247,9 @@ class Ui_MainWindow(object):
         self.button_init_nodes.setObjectName("button_init_nodes")
         self.frame_5 = QtWidgets.QFrame(self.tab)
         self.frame_5.setGeometry(QtCore.QRect(1250, 540, 571, 361))
-        self.frame_5.setStyleSheet("QFrame{background-color:rgb(21, 21, 39);\n"
+        self.frame_5.setStyleSheet("QFrame{background-color:rgb(23, 27, 48);\n"
 "border-radius: 15px; \n"
-"border: 2px solid white;}\n"
+"border: 2px solid rgb(99, 102, 108);}\n"
 "QLabel{border:none;}\n"
 "\n"
 "")
@@ -295,7 +302,8 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.label_5.setFont(font)
-        self.label_5.setStyleSheet("border:2px solid white;")
+        self.label_5.setStyleSheet("border:2px solid rgb(99, 102, 108);\n"
+"background-color:rgb(21,21,39);")
         self.label_5.setAlignment(QtCore.Qt.AlignCenter)
         self.label_5.setObjectName("label_5")
         self.label_6 = QtWidgets.QLabel(self.frame_5)
@@ -305,7 +313,7 @@ class Ui_MainWindow(object):
         self.frame_4.setGeometry(QtCore.QRect(700, 0, 540, 341))
         self.frame_4.setStyleSheet("background-color:rgb(21, 21, 39);\n"
 "border-radius: 15px; \n"
-"border: 2px solid white;")
+"border: 2px solid rgb(99, 102, 108);")
         self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_4.setObjectName("frame_4")
@@ -322,7 +330,7 @@ class Ui_MainWindow(object):
         self.frame_3.setGeometry(QtCore.QRect(700, 350, 541, 271))
         self.frame_3.setStyleSheet("background-color:rgb(21, 21, 39);\n"
 "border-radius: 15px; \n"
-"border: 2px solid white;")
+"border: 2px solid rgb(99, 102, 108);")
         self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_3.setObjectName("frame_3")
@@ -344,21 +352,6 @@ class Ui_MainWindow(object):
         self.label_12 = QtWidgets.QLabel(self.frame_3)
         self.label_12.setGeometry(QtCore.QRect(40, 180, 71, 31))
         self.label_12.setObjectName("label_12")
-        self.widget = QtWidgets.QWidget(self.tab)
-        self.widget.setGeometry(QtCore.QRect(700, 630, 541, 291))
-        self.widget.setStyleSheet("background-color:rgb(21, 21, 39);\n"
-"border-radius: 15px; \n"
-"border: 2px solid white;")
-        self.widget.setObjectName("widget")
-        self.label_21 = QtWidgets.QLabel(self.widget)
-        self.label_21.setGeometry(QtCore.QRect(170, 20, 181, 41))
-        font = QtGui.QFont()
-        font.setPointSize(13)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_21.setFont(font)
-        self.label_21.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_21.setObjectName("label_21")
         self.horizontalSlider_2 = QtWidgets.QSlider(self.tab)
         self.horizontalSlider_2.setGeometry(QtCore.QRect(520, 770, 101, 16))
         self.horizontalSlider_2.setProperty("value", 0)
@@ -369,14 +362,35 @@ class Ui_MainWindow(object):
         self.horizontalSlider_3.setProperty("value", 0)
         self.horizontalSlider_3.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider_3.setObjectName("horizontalSlider_3")
+        self.frame_11 = QtWidgets.QFrame(self.tab)
+        self.frame_11.setGeometry(QtCore.QRect(700, 620, 541, 311))
+        self.frame_11.setStyleSheet("background-color:rgb(21, 21, 39);\n"
+"border-radius: 15px; \n"
+"border: 2px solid rgb(99, 102, 108);")
+        self.frame_11.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_11.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_11.setObjectName("frame_11")
+        self.widget = QtWidgets.QWidget(self.frame_11)
+        self.widget.setGeometry(QtCore.QRect(10, 70, 521, 221))
+        self.widget.setStyleSheet("border:none;")
+        self.widget.setObjectName("widget")
+        self.label_21 = QtWidgets.QLabel(self.frame_11)
+        self.label_21.setGeometry(QtCore.QRect(190, 20, 181, 41))
+        font = QtGui.QFont()
+        font.setPointSize(13)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_21.setFont(font)
+        self.label_21.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_21.setObjectName("label_21")
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.frame = QtWidgets.QFrame(self.tab_2)
         self.frame.setGeometry(QtCore.QRect(0, 10, 901, 661))
-        self.frame.setStyleSheet("background-color:rgb(21, 21, 39);\n"
+        self.frame.setStyleSheet("background-color:rgb(23, 27, 48);\n"
 "border-radius: 15px; \n"
-"border: 2px solid white;")
+"border: 2px solid rgb(99, 102, 108);")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
@@ -387,11 +401,13 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.label_13.setFont(font)
+        self.label_13.setStyleSheet("background-color:rgb(21,21,39)")
         self.label_13.setAlignment(QtCore.Qt.AlignCenter)
         self.label_13.setObjectName("label_13")
         self.tableWidget = QtWidgets.QTableWidget(self.frame)
         self.tableWidget.setGeometry(QtCore.QRect(60, 70, 821, 441))
-        self.tableWidget.setStyleSheet("border:none;")
+        self.tableWidget.setStyleSheet("border:none;\n"
+"")
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
@@ -403,7 +419,7 @@ class Ui_MainWindow(object):
         self.frame_10.setGeometry(QtCore.QRect(910, 10, 921, 661))
         self.frame_10.setStyleSheet("background-color:rgb(21, 21, 39);\n"
 "border-radius: 15px; \n"
-"border: 2px solid white;")
+"border: 2px solid rgb(99, 102, 108);")
         self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_10.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_10.setObjectName("frame_10")

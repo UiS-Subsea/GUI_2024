@@ -15,7 +15,7 @@ import math
 
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
-from cpp_package.msg import Manipulator, ReguleringPID
+from cpp_package.msg import Manipulator, PID, ModeControl
 from MainWindow import Ui_MainWindow
 from rclpy.node import Node
 import time, threading
@@ -78,7 +78,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.ui=Ui_MainWindow()
         self.ui.setupUi(self)
-        self.ros_sim_status=False
+        self.ros_rov_status=False
         self.ros_controller_status=False
         self.trip_id=None
         self.logtest1=0
@@ -124,6 +124,7 @@ class MainWindow(QMainWindow):
         self.ui.button_docking.clicked.connect(self.drive_mode)
         self.ui.button_logger.clicked.connect(self.start_logging)
         self.ui.button_light.clicked.connect(self.toggle_lights)
+        self.ui.button_manipulator.clicked.connect(self.manipulator)
         self.ui.horizontalSlider.valueChanged.connect(self.toggle_lights)
         self.ui.horizontalSlider.setVisible(False)
         self.player = QMediaPlayer()
@@ -154,7 +155,7 @@ class MainWindow(QMainWindow):
                 # Set the text of the corresponding item in the second column
                 self.ui.tableWidget.setItem(row, 4, item.clone())
                 self.ui.tableWidget.setItem(row,5,None)
-        msg=ReguleringPID()
+        msg=PID()
 
         msg.pitch_p=float(self.ui.tableWidget.item(0,0).text())
         msg.pitch_i=float(self.ui.tableWidget.item(0,1).text())
@@ -174,7 +175,7 @@ class MainWindow(QMainWindow):
         msg.z_p=float(self.ui.tableWidget.item(5,0).text())
         msg.z_i=float(self.ui.tableWidget.item(5,1).text())
         msg.z_d=float(self.ui.tableWidget.item(5,2).text())
-
+        print(msg.pitch_p)
         self.pub_pid.publish(msg)
 
 
@@ -191,14 +192,14 @@ class MainWindow(QMainWindow):
         self.ui.button_docking.setStyleSheet("background-color:rgb(21, 21, 39)")
         sender=self.sender()
         sender.setStyleSheet(" background-color:green")
-        msg=String()
+        msg=ModeControl()
         if sender==self.ui.button_manual:
-            msg.data="Manual"
+            msg.drive_mode="Manual"
             
         if sender==self.ui.button_pipeline:
-            msg.data="Pipeline"
+            msg.drive_mode="Pipeline"
         if sender==self.ui.button_docking:
-            msg.data="Docking"
+            msg.drive_mode="Docking"
         self.pub_mode.publish(msg)
         
         
@@ -266,23 +267,33 @@ class MainWindow(QMainWindow):
         print(light_strenght)
         
 
-
+    def manipulator(self):
+        msg=ModeControl()
+        if self.ui.button_manipulator.isChecked():
+            self.ui.button_manipulator.setText("Active")
+            self.ui.button_manipulator.setStyleSheet("background-color:green;")
+            msg.manipulator=True
+        else:
+            self.ui.button_manipulator.setText("Unactive")
+            self.ui.button_manipulator.setStyleSheet("background-color:red;")
+            msg.manipulator=False
+        self.pub_mode.publish(msg)
     def check_ros_connectivity(self):
         process = subprocess.Popen(['ros2','node', 'list'], stdout=subprocess.PIPE)
         stdout = process.communicate()
-        if "sim_node" in stdout[0].decode():
-            self.ui.label_ros_sim_status.setText("Running")
-            self.ui.status_icon_ros_sim.setText("OK")
-            self.ui.status_icon_ros_sim.setStyleSheet("color:green")
-            self.ros_sim_status=True
+        if "rov_node" in stdout[0].decode():
+            self.ui.label_ros_rov_status.setText("Running")
+            self.ui.status_icon_ros_rov.setText("OK")
+            self.ui.status_icon_ros_rov.setStyleSheet("color:green")
+            self.ros_rov_status=True
         else:
-            if self.ros_sim_status == True:
-                self.ui.label_ros_sim_status.setText("Not Running")
-                self.ui.status_icon_ros_sim.setText("X")
-                self.ui.status_icon_ros_sim.setStyleSheet("color:red")
-                self.display_message_signal.emit("NodeError", "Sim node was disconnected")
-                self.ros_sim_status=False
-        if "controller_pub_node" in stdout[0].decode():
+            if self.ros_rov_status == True:
+                self.ui.label_ros_rov_status.setText("Not Running")
+                self.ui.status_icon_ros_rov.setText("X")
+                self.ui.status_icon_ros_rov.setStyleSheet("color:red")
+                self.display_message_signal.emit("NodeError", "ROV node was disconnected")
+                self.ros_rov_status=False
+        if "controller_node" in stdout[0].decode():
             self.ui.label_ros_controller_status.setText("Running")
             self.ui.status_icon_ros_controller.setText("OK")
             self.ui.status_icon_ros_controller.setStyleSheet("color:green")
@@ -305,9 +316,9 @@ class MainWindow(QMainWindow):
         self.node = Node('gui_node')
         self.ros_running=True
         self.check_ros_connectivity()
-        self.pub_mode=self.node.create_publisher(String,'mode_control',10)
-        self.pub_pid=self.node.create_publisher(ReguleringPID,'pid',10)
-        self.sub=self.node.create_subscription(Manipulator,'sim_data',self.listener_callback,10)
+        self.pub_mode=self.node.create_publisher(ModeControl,'mode_control',10)
+        self.pub_pid=self.node.create_publisher(PID,'test',10)
+        self.sub=self.node.create_subscription(PID,'test',self.listener_callback,10)
         self.sub_test_rotation=self.node.create_subscription(Twist,'ROV_movement',self.callback,10)
         ros_thread=threading.Thread(target=rclpy.spin, args=(self.node,), daemon=True)
         ros_thread.start()
@@ -315,10 +326,19 @@ class MainWindow(QMainWindow):
     
     def listener_callback(self,msg):
         
-        self.ui.thruster_1.setText(msg.field1)
+        #self.ui.thruster_1.setText(str(msg.pitch_p))
+        print(msg.pitch_p)
+        #self.ui.thruster_2.setText(msg.pitch_i)
+        #self.ui.thruster_3.setText(msg.pitch_d)
     
     def callback(self,msg):
         self.robot_arm_view.setRotation(msg.angular.y)
+        self.ui.label_roll.setText(str(int(msg.angular.x)))
+        self.ui.label_pitch.setText(str(int(msg.angular.y)))
+        self.ui.label_yaw.setText(str(int(msg.angular.z)))
+        self.ui.label_surge.setText(str(msg.linear.x))
+        self.ui.label_sway.setText(str(msg.linear.y))
+        self.ui.label_heave.setText(str(msg.linear.z))
         
         
 
@@ -342,7 +362,7 @@ class MainWindow(QMainWindow):
             signal.signal(signal.SIGALRM, handler)
             signal.alarm(5) 
             # Connect to the SSH server
-            ssh_client.connect(hostname='10.0.0.2', username='cj', password='doWnhi11')
+            ssh_client.connect(hostname='10.0.0.2', username='subsea', password='subsea88')
             signal.alarm(0)
             # Execute the command
             stdin, stdout, stderr = ssh_client.exec_command('gst-launch-1.0 -v v4l2src device=/dev/video0 ! videoconvert ! x264enc tune=zerolatency ! rtph264pay ! udpsink host=10.0.0.1 port=5000')

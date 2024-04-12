@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1860</width>
-    <height>1000</height>
+    <height>1126</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -429,7 +429,7 @@ border: 2px solid green;
           <x>1250</x>
           <y>0</y>
           <width>571</width>
-          <height>531</height>
+          <height>561</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -528,6 +528,12 @@ color:white
           <property name="text">
            <string>Manual</string>
           </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
          </widget>
          <widget class="QPushButton" name="button_pipeline">
           <property name="geometry">
@@ -559,10 +565,10 @@ color:white
         <widget class="QFrame" name="frame_7">
          <property name="geometry">
           <rect>
-           <x>280</x>
-           <y>320</y>
-           <width>271</width>
-           <height>171</height>
+           <x>20</x>
+           <y>330</y>
+           <width>531</width>
+           <height>201</height>
           </rect>
          </property>
          <property name="styleSheet">
@@ -577,7 +583,7 @@ color:white
          <widget class="QLabel" name="label_17">
           <property name="geometry">
            <rect>
-            <x>80</x>
+            <x>200</x>
             <y>20</y>
             <width>121</width>
             <height>31</height>
@@ -597,17 +603,20 @@ color:white
            <set>Qt::AlignCenter</set>
           </property>
          </widget>
-         <widget class="QSlider" name="horizontalSlider">
+         <widget class="QSlider" name="horizontalSlider_front_light">
           <property name="geometry">
            <rect>
-            <x>70</x>
-            <y>120</y>
+            <x>40</x>
+            <y>160</y>
             <width>160</width>
             <height>16</height>
            </rect>
           </property>
           <property name="styleSheet">
            <string notr="true">border:none;</string>
+          </property>
+          <property name="maximum">
+           <number>255</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -616,11 +625,11 @@ color:white
            <bool>false</bool>
           </property>
          </widget>
-         <widget class="QPushButton" name="button_light">
+         <widget class="QPushButton" name="button_front_light">
           <property name="geometry">
            <rect>
-            <x>90</x>
-            <y>70</y>
+            <x>70</x>
+            <y>100</y>
             <width>91</width>
             <height>31</height>
            </rect>
@@ -633,6 +642,120 @@ color:white
           </property>
           <property name="checkable">
            <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="button_bottom_light">
+          <property name="geometry">
+           <rect>
+            <x>380</x>
+            <y>100</y>
+            <width>91</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:red;</string>
+          </property>
+          <property name="text">
+           <string>Off</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QSlider" name="horizontalSlider_bottom_light">
+          <property name="geometry">
+           <rect>
+            <x>350</x>
+            <y>160</y>
+            <width>160</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border:none;</string>
+          </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="invertedControls">
+           <bool>false</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_26">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>50</y>
+            <width>81</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Front</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_27">
+          <property name="geometry">
+           <rect>
+            <x>380</x>
+            <y>50</y>
+            <width>81</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Bottom</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="button_light_master">
+          <property name="geometry">
+           <rect>
+            <x>210</x>
+            <y>110</y>
+            <width>101</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:red;</string>
+          </property>
+          <property name="text">
+           <string>Off</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_28">
+          <property name="geometry">
+           <rect>
+            <x>220</x>
+            <y>70</y>
+            <width>81</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Master</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </widget>
@@ -718,8 +841,8 @@ background-color:rgb(23, 27, 48)</string>
         <widget class="QPushButton" name="button_init_cams">
          <property name="geometry">
           <rect>
-           <x>30</x>
-           <y>340</y>
+           <x>50</x>
+           <y>20</y>
            <width>101</width>
            <height>31</height>
           </rect>
@@ -734,8 +857,8 @@ background-color:rgb(23, 27, 48)</string>
         <widget class="QPushButton" name="button_init_nodes">
          <property name="geometry">
           <rect>
-           <x>30</x>
-           <y>390</y>
+           <x>440</x>
+           <y>20</y>
            <width>101</width>
            <height>31</height>
           </rect>
@@ -752,7 +875,7 @@ background-color:rgb(23, 27, 48)</string>
         <property name="geometry">
          <rect>
           <x>1250</x>
-          <y>540</y>
+          <y>570</y>
           <width>571</width>
           <height>361</height>
          </rect>
@@ -930,6 +1053,44 @@ background-color:rgb(21,21,39);</string>
          </property>
          <property name="text">
           <string>Status:</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_25">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>250</y>
+           <width>181</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Connected controllers:</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="connected_controllers">
+         <property name="geometry">
+          <rect>
+           <x>350</x>
+           <y>260</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </widget>

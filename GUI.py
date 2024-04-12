@@ -13,9 +13,9 @@ import signal
 import sqlite3
 import math
 
-from std_msgs.msg import String
+from std_msgs.msg import String, Int16
 from geometry_msgs.msg import Twist
-from cpp_package.msg import Manipulator, PID, ModeControl
+from cpp_package.msg import Manipulator, PID, ModeControl, LightStrenght
 from MainWindow import Ui_MainWindow
 from rclpy.node import Node
 import time, threading
@@ -123,10 +123,14 @@ class MainWindow(QMainWindow):
         self.ui.button_pipeline.clicked.connect(self.drive_mode)
         self.ui.button_docking.clicked.connect(self.drive_mode)
         self.ui.button_logger.clicked.connect(self.start_logging)
-        self.ui.button_light.clicked.connect(self.toggle_lights)
+        self.ui.button_front_light.clicked.connect(self.toggle_lights)
+        self.ui.button_bottom_light.clicked.connect(self.toggle_lights)
+        self.ui.button_light_master.clicked.connect(self.toggle_lights)
         self.ui.button_manipulator.clicked.connect(self.manipulator)
-        self.ui.horizontalSlider.valueChanged.connect(self.toggle_lights)
-        self.ui.horizontalSlider.setVisible(False)
+        self.ui.horizontalSlider_front_light.valueChanged.connect(self.toggle_lights)
+        self.ui.horizontalSlider_front_light.setVisible(False)
+        self.ui.horizontalSlider_bottom_light.valueChanged.connect(self.toggle_lights)
+        self.ui.horizontalSlider_bottom_light.setVisible(False)
         self.player = QMediaPlayer()
         self.ui.tableWidget.setColumnCount(6)
         self.ui.tableWidget.setHorizontalHeaderLabels(('P','I','D','Verdi','Mål','Ønsket'))
@@ -195,11 +199,15 @@ class MainWindow(QMainWindow):
         msg=ModeControl()
         if sender==self.ui.button_manual:
             msg.drive_mode="Manual"
-            
+            self.ui.button_manual.setChecked(True)
         if sender==self.ui.button_pipeline:
             msg.drive_mode="Pipeline"
+            self.ui.button_manual.setChecked(False)
+            self.manipulator()
         if sender==self.ui.button_docking:
             msg.drive_mode="Docking"
+            self.ui.button_manual.setChecked(False)
+            self.manipulator()
         self.pub_mode.publish(msg)
         
         
@@ -253,31 +261,75 @@ class MainWindow(QMainWindow):
                     item = QTableWidgetItem(str(value))
                     self.ui.tableWidget_2.setItem(i, j-2, item) 
     def toggle_lights(self):
-        if self.ui.button_light.isChecked():
-            self.ui.button_light.setText("On")
-            self.ui.button_light.setStyleSheet("background-color:green;")
-            self.ui.horizontalSlider.setVisible(True)
-            light_strenght=self.ui.horizontalSlider.value()
+        sender=self.sender()
+        msg=LightStrenght()
+        if sender== self.ui.button_light_master:
+            if self.ui.button_light_master.isChecked():
+                self.ui.button_light_master.setText("On")
+                self.ui.button_light_master.setStyleSheet("background-color:green;")
+                self.ui.button_front_light.setChecked(True)
+                self.ui.button_bottom_light.setChecked(True)
+            else:
+                self.ui.button_light_master.setText("Off")
+                self.ui.button_light_master.setStyleSheet("background-color:red;")
+                self.ui.button_front_light.setChecked(False)
+                self.ui.button_bottom_light.setChecked(False)
+        
+        if self.ui.button_front_light.isChecked():
+            self.ui.button_front_light.setText("On")
+            self.ui.button_front_light.setStyleSheet("background-color:green;")
+            self.ui.horizontalSlider_front_light.setVisible(True)
+            msg.front_lights=self.ui.horizontalSlider_front_light.value()
+            self.ui.button_light_master.setChecked(True)
+            self.ui.button_light_master.setText("On")
+            self.ui.button_light_master.setStyleSheet("background-color:green;")
             
         else:
-            self.ui.button_light.setText("Off")
-            self.ui.button_light.setStyleSheet("background-color:red;")
-            self.ui.horizontalSlider.setVisible(False)
-            light_strenght=0
-        print(light_strenght)
+            self.ui.button_front_light.setText("Off")
+            self.ui.button_front_light.setStyleSheet("background-color:red;")
+            self.ui.horizontalSlider_front_light.setVisible(False)
+            msg.front_lights=0
+        
+        if self.ui.button_bottom_light.isChecked():
+            self.ui.button_bottom_light.setText("On")
+            self.ui.button_bottom_light.setStyleSheet("background-color:green;")
+            self.ui.horizontalSlider_bottom_light.setVisible(True)
+            msg.bottom_lights=self.ui.horizontalSlider_bottom_light.value()
+            self.ui.button_light_master.setChecked(True)
+            self.ui.button_light_master.setText("On")
+            self.ui.button_light_master.setStyleSheet("background-color:green;")
+            
+        else:
+            self.ui.button_bottom_light.setText("Off")
+            self.ui.button_bottom_light.setStyleSheet("background-color:red;")
+            self.ui.horizontalSlider_bottom_light.setVisible(False)
+            msg.bottom_lights=0
+        self.pub_light.publish(msg)
         
 
     def manipulator(self):
         msg=ModeControl()
+        if not self.ui.button_manual.isChecked():
+            self.ui.button_manipulator.setChecked(False)
+            if self.sender()==self.ui.button_manipulator:
+                self.display_message_box("Warning","Manual drive mode must be active to engage manipulator")
+
         if self.ui.button_manipulator.isChecked():
-            self.ui.button_manipulator.setText("Active")
-            self.ui.button_manipulator.setStyleSheet("background-color:green;")
-            msg.manipulator=True
+            if int(self.ui.connected_controllers.text())<2:
+                self.display_message_box("Warning","Need to have 2 controllers connected to initialize the manipulator")
+            else:
+                self.ui.button_manipulator.setText("Active")
+                self.ui.button_manipulator.setStyleSheet("background-color:green;")
+                msg.manipulator=True
+                msg.drive_mode="Manual"
         else:
             self.ui.button_manipulator.setText("Unactive")
             self.ui.button_manipulator.setStyleSheet("background-color:red;")
             msg.manipulator=False
+            msg.drive_mode= "Manual"
         self.pub_mode.publish(msg)
+        
+            
     def check_ros_connectivity(self):
         process = subprocess.Popen(['ros2','node', 'list'], stdout=subprocess.PIPE)
         stdout = process.communicate()
@@ -310,6 +362,7 @@ class MainWindow(QMainWindow):
         if self.ros_running==True:
             threading.Timer(1, self.check_ros_connectivity).start()
         
+        
 
     def connect_ros(self):
         rclpy.init(args=None)
@@ -317,6 +370,8 @@ class MainWindow(QMainWindow):
         self.ros_running=True
         self.check_ros_connectivity()
         self.pub_mode=self.node.create_publisher(ModeControl,'mode_control',10)
+        self.pub_light=self.node.create_publisher(LightStrenght,"light_control",10)
+        self.sub_connected_controllers=self.node.create_subscription(Int16,"connected_controllers",self.controller_callback,10)
         self.pub_pid=self.node.create_publisher(PID,'test',10)
         self.sub=self.node.create_subscription(PID,'test',self.listener_callback,10)
         self.sub_test_rotation=self.node.create_subscription(Twist,'ROV_movement',self.callback,10)
@@ -340,7 +395,13 @@ class MainWindow(QMainWindow):
         self.ui.label_sway.setText(str(msg.linear.y))
         self.ui.label_heave.setText(str(msg.linear.z))
         
+    def controller_callback(self,msg):
         
+        if int(self.ui.connected_controllers.text())> msg.data:
+            self.display_message_signal.emit("Warning","Controller disconnected")
+        self.ui.connected_controllers.setText(str(msg.data))
+        
+            
 
     def closeEvent(self,event):
         if self.node:

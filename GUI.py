@@ -15,7 +15,7 @@ import math
 
 from std_msgs.msg import String, Int16
 from geometry_msgs.msg import Twist
-from cpp_package.msg import Manipulator, PID, ModeControl, LightStrenght
+from cpp_package.msg import Manipulator, PID, ModeControl, LightStrenght, ThrusterRange, Thruster, Sensor
 from MainWindow import Ui_MainWindow
 from rclpy.node import Node
 import time, threading
@@ -104,12 +104,12 @@ class MainWindow(QMainWindow):
                     (id INTEGER PRIMARY KEY AUTOINCREMENT,
                     trip_id INTEGER,
                     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    temp_1 REAL,
-                    temp_2 REAL,
-                    temp_3 REAL,
-                    temp_4 REAL,
-                    temp_5 REAL,
-                    pressure REAL,
+                    temp_1 FLOAT,
+                    temp_2 FLOAT,
+                    temp_3 FLOAT,
+                    temp_4 FLOAT,
+                    temp_5 FLOAT,
+                    pressure FLOAT,
                     leakage STRING)''')
         self.con.commit()
         self.initUI()
@@ -119,6 +119,7 @@ class MainWindow(QMainWindow):
         self.node=None
         self.setWindowTitle('ROS Control GUI')
         self.ui.button_init_cams.clicked.connect(self.init_cams)
+        self.ui.button_init_nodes.clicked.connect(self.test_function)
         self.ui.button_manual.clicked.connect(self.drive_mode)
         self.ui.button_pipeline.clicked.connect(self.drive_mode)
         self.ui.button_docking.clicked.connect(self.drive_mode)
@@ -127,6 +128,8 @@ class MainWindow(QMainWindow):
         self.ui.button_bottom_light.clicked.connect(self.toggle_lights)
         self.ui.button_light_master.clicked.connect(self.toggle_lights)
         self.ui.button_manipulator.clicked.connect(self.manipulator)
+        self.ui.spinBox.valueChanged.connect(self.update_thruster_range)
+        self.ui.spinBox_2.valueChanged.connect(self.update_thruster_range)
         self.ui.horizontalSlider_front_light.valueChanged.connect(self.toggle_lights)
         self.ui.horizontalSlider_front_light.setVisible(False)
         self.ui.horizontalSlider_bottom_light.valueChanged.connect(self.toggle_lights)
@@ -182,8 +185,21 @@ class MainWindow(QMainWindow):
         print(msg.pitch_p)
         self.pub_pid.publish(msg)
 
+    def update_thruster_range(self):
+        msg=ThrusterRange()
+        msg.start=self.ui.spinBox.value()
+        msg.end=self.ui.spinBox_2.value()
+        print(msg)
+        self.pub_thruster_input_range.publish(msg)
 
-
+    def test_function(self):
+        msg=Sensor()
+        msg.temp1=60.0
+        msg.temp2=20.0
+        msg.temp3=40.0
+        msg.temp4=50.0
+        msg.temp5=15.0
+        self.pub_test.publish(msg)
     
     #only for testing / convert to a callback for angle topic
     def update_arm(self):
@@ -238,7 +254,7 @@ class MainWindow(QMainWindow):
                 test='sensor 3'
             else:
                 test='sensor 4'
-            self.c.execute('''INSERT INTO rov_logs (trip_id, leakage) VALUES (?, ?)''', (self.trip_id, test))
+            self.c.execute('''INSERT INTO rov_logs (trip_id,temp_1,temp_2,temp_3,temp_4,temp_5,pressure, leakage) VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', (self.trip_id,float(self.ui.temp_1.text()),float(self.ui.temp_2.text()),float(self.ui.temp_3.text()),float(self.ui.temp_4.text()),float(self.ui.water_temp.text()),float(self.ui.pressure.text()), test)),
             self.con.commit()
             self.populate_trip_combobox()
             self.display_trip()
@@ -372,28 +388,83 @@ class MainWindow(QMainWindow):
         self.pub_mode=self.node.create_publisher(ModeControl,'mode_control',10)
         self.pub_light=self.node.create_publisher(LightStrenght,"light_control",10)
         self.sub_connected_controllers=self.node.create_subscription(Int16,"connected_controllers",self.controller_callback,10)
-        self.pub_pid=self.node.create_publisher(PID,'test',10)
-        self.sub=self.node.create_subscription(PID,'test',self.listener_callback,10)
-        self.sub_test_rotation=self.node.create_subscription(Twist,'ROV_movement',self.callback,10)
+        self.pub_pid=self.node.create_publisher(PID,'pid',10)
+        self.pub_thruster_input_range=self.node.create_publisher(ThrusterRange,"thruster_input_range",10)
+        #self.pub_test=self.node.create_publisher(Sensor,"sensor_values",10)
+        self.sub_sensor=self.node.create_subscription(Sensor,"sensor_values",self.sensor_callback,10)
+        self.sub_thruster=self.node.create_subscription(Thruster,'thruster_values',self.thruster_callback,10)
+       # self.sub_test_rotation=self.node.create_subscription(Twist,'ROV_movement',self.callback,10)
         ros_thread=threading.Thread(target=rclpy.spin, args=(self.node,), daemon=True)
         ros_thread.start()
         
     
-    def listener_callback(self,msg):
+    def thruster_callback(self,msg):
+        thruster1=round(msg.field1/100,2)
+        thruster2=round(msg.field2/100,2)
+        thruster3=round(msg.field3/100,2)
+        thruster4=round(msg.field4/100,2)
+        thruster5=round(msg.field5/100,2)
+        thruster6=round(msg.field6/100,2)
+        thruster7=round(msg.field7/100,2)
+        thruster8=round(msg.field8/100,2)
+        self.ui.thruster_1.setText(str(thruster1))
+        self.percentage_bar(self.ui.thruster_frame_1,thruster1)
+        self.ui.thruster_2.setText(str(thruster2))
+        self.percentage_bar(self.ui.thruster_frame_2,thruster2)
+        self.ui.thruster_3.setText(str(thruster3))
+        self.percentage_bar(self.ui.thruster_frame_3,thruster3)
+        self.ui.thruster_4.setText(str(thruster4))
+        self.percentage_bar(self.ui.thruster_frame_4,thruster4)
+        self.ui.thruster_5.setText(str(thruster5))
+        self.percentage_bar(self.ui.thruster_frame_5,thruster5)
+        self.ui.thruster_6.setText(str(thruster6))
+        self.percentage_bar(self.ui.thruster_frame_6,thruster6)
+        self.ui.thruster_7.setText(str(thruster7))
+        self.percentage_bar(self.ui.thruster_frame_7,thruster7)
+        self.ui.thruster_8.setText(str(thruster8))
+        self.percentage_bar(self.ui.thruster_frame_8,thruster8)
         
-        #self.ui.thruster_1.setText(str(msg.pitch_p))
-        print(msg.pitch_p)
-        #self.ui.thruster_2.setText(msg.pitch_i)
-        #self.ui.thruster_3.setText(msg.pitch_d)
+    def sensor_callback(self,msg):
+        internal_temperatures=[msg.temp1,msg.temp2,msg.temp3,msg.temp4]
+        temp_labels=[self.ui.temp_1,self.ui.temp_2,self.ui.temp_3,self.ui.temp_4]
+        
+        for i in range(4):
+            if internal_temperatures[i]<40:
+                temp_labels[i].setStyleSheet("border: 2px solid green")
+            elif internal_temperatures[i]<50:
+                temp_labels[i].setStyleSheet("border: 2px solid yellow")
+            elif internal_temperatures[i]<60:
+                temp_labels[i].setStyleSheet("border: 2px solid orange")
+            else:
+                temp_labels[i].setStyleSheet("border: 2px solid red")
+            temp_labels[i].setText(str(internal_temperatures[i]))
+        self.ui.water_temp.setText(str(msg.temp5))
+
+    
+    def percentage_bar(self, frame,value):
+        color="green"
+        value=round(value,3)
+        percentage=1-value
+        stop1=percentage-0.001
+        stop2=percentage
+        if value<0:
+            percentage=percentage-1
+            stop1=percentage
+            stop2=percentage-0.001
+            color="red"
+        styleSheet = "border:none;background-color: qconicalgradient(cx:0.5, cy:0.5, angle:90, stop:{STOP_1} rgba(77, 77, 127, 100), stop:{STOP_2} {COLOR});"
+        styleSheet = styleSheet.replace("{STOP_1}", str(stop1)).replace("{STOP_2}", str(stop2)).replace("{COLOR}", color)
+        frame.setStyleSheet(styleSheet)
     
     def callback(self,msg):
         self.robot_arm_view.setRotation(msg.angular.y)
-        self.ui.label_roll.setText(str(int(msg.angular.x)))
-        self.ui.label_pitch.setText(str(int(msg.angular.y)))
-        self.ui.label_yaw.setText(str(int(msg.angular.z)))
+        self.ui.label_roll.setText(str(msg.angular.x))
+        self.ui.label_pitch.setText(str(msg.angular.y))
+        self.ui.label_yaw.setText(str(msg.angular.z))
         self.ui.label_surge.setText(str(msg.linear.x))
         self.ui.label_sway.setText(str(msg.linear.y))
         self.ui.label_heave.setText(str(msg.linear.z))
+        
         
     def controller_callback(self,msg):
         
@@ -426,13 +497,15 @@ class MainWindow(QMainWindow):
             ssh_client.connect(hostname='10.0.0.2', username='subsea', password='subsea88')
             signal.alarm(0)
             # Execute the command
-            stdin, stdout, stderr = ssh_client.exec_command('gst-launch-1.0 -v v4l2src device=/dev/video0 ! videoconvert ! x264enc tune=zerolatency ! rtph264pay ! udpsink host=10.0.0.1 port=5000')
-
+            stdin, stdout, stderr = ssh_client.exec_command('gst-launch-1.0 -v v4l2src device=/dev/video3 ! videoconvert ! x264enc tune=zerolatency ! rtph264pay ! udpsink host=10.0.0.1 port=5600')
+            
             # Read the output
-            output = stdout.read().decode()
-            media_content = QMediaContent(QUrl("gst-pipeline: udpsrc port = 5000 caps= \"application/x-rtp, payload=96\" ! rtph264depay ! h264parse ! avdec_h264 ! videoconvert ! xvimagesink name=\"qtvideosink\""))
+            output = stderr.read().decode()
+            media_content = QMediaContent(QUrl("gst-pipeline: udpsrc port = 5600 caps= \"application/x-rtp, payload=96\" ! rtph264depay ! h264parse ! avdec_h264 ! videoconvert ! xvimagesink name=\"qtvideosink\""))
             self.player.setMedia(media_content)
             # Play the video
+            
+            print(output)
             self.player.play()
 
         except TimeoutError:

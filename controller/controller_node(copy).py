@@ -9,7 +9,7 @@ import threading
 
 pygame.init()
 
-#rov movement
+#ROV
 surge = 0
 sway=0
 heave=0
@@ -17,8 +17,7 @@ pitch=0
 roll=0
 yaw=0
 
- 
-#manipulator controll
+#Manipulator
 height=0.0
 reach=0.0
 pinch=0.0
@@ -28,11 +27,6 @@ manipulator=False
 wait_for_rov_controller=True
 man_controller_connected=False
 connected_controllers=0
-
-
-
-
-
 
 class ControllerNode(Node):
 
@@ -46,15 +40,12 @@ class ControllerNode(Node):
         self.get_logger().info("Node is alive")
         self.mode="Manual"
         
-    
     def listener_callback(self, msg):
         global manipulator, wait_for_rov_controller
         self.mode=msg.drive_mode
         
         wait_for_rov_controller=True
         manipulator=msg.manipulator
-        
-
     
     def timer_callback(self):
         global man_controller_connected, connected_controllers
@@ -102,14 +93,11 @@ class ControllerNode(Node):
         msg.data=connected_controllers
         self.connected_controllers.publish(msg)
 
-
-
 def joystick_reader():
     
     global wait_for_rov_controller, manipulator, yaw, roll, pitch, surge, sway, heave,man_controller_connected, connected_controllers
     sensitivity = 0.0002
     
-
     while True:
         
         if wait_for_rov_controller:
@@ -133,7 +121,6 @@ def joystick_reader():
         
         connected_controllers=pygame.joystick.get_count()
 
-
         if connected_controllers==0:
             wait_for_rov_controller = True
       
@@ -143,10 +130,7 @@ def joystick_reader():
             rov_stick=pygame.joystick.Joystick(0)
             man_controller_connected=False
             
-           
-            
-            
-            
+
         LB=rov_stick.get_button(4)
         RB=rov_stick.get_button(5)
         left_y=rov_stick.get_axis(0)
@@ -208,21 +192,14 @@ def joystick_reader():
                 except:
                     print("couldnt find controller")
             
-            
-
-
-
-           
 
 def main(args=None):
     rclpy.init(args=args)
     node = ControllerNode()
 
-    # Start the ROS node in a separate thread
     thread_ros_node = threading.Thread(target=rclpy.spin, args=(node,), daemon=True)
     thread_ros_node.start()
 
-    # Start the joystick reader in the main thread
     joystick_reader()
 
     rclpy.shutdown()

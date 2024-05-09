@@ -60,22 +60,16 @@ class CriticalMessage(QMessageBox):
         self.setWindowTitle("Water Leakage Detected")
         self.setText("Water leakage detected! Please take immediate action.")
         self.setIcon(QMessageBox.Warning)
-        
-        # Set red background color with transparency
         self.setStyleSheet("background-color: rgba(255, 0, 0, 100); color: white;")
-
         self.flash_timer = QTimer(self)
         self.flash_timer.timeout.connect(self.toggle_color)
-        
-        # Start the flashing effect
-        self.flash_timer.start(500)  # Flash every 500 milliseconds
+        self.flash_timer.start(500)
 
     def toggle_color(self):
-        # Toggle between red and transparent background color
         current_color = self.palette().color(self.backgroundRole())
-        if current_color.red() == 255:  # If current color is red, set it to transparent
+        if current_color.red() == 255:
             self.setStyleSheet("background-color: rgb(21, 21,39); color: white;")
-        else:  # If current color is transparent, set it to red
+        else:
             self.setStyleSheet("background-color: rgba(255, 0, 0, 100); color: white;")
 
 class RobotArmView(QWidget):
@@ -83,18 +77,15 @@ class RobotArmView(QWidget):
         super(RobotArmView, self).__init__(parent)
         self.setMinimumSize(531, 321)
         self.setWindowTitle("ROV with Robot Arm")
-        
-        # Load PNG images for the box and arm
-        self.rov_image = QPixmap("images/rov_from_side.png",)  # Adjust the path to your ROV image
-        self.arm_segment1_image = QPixmap("images/arm_1.png")  # Adjust the path to your arm segment image
+        self.rov_image = QPixmap("images/rov_from_side.png",)
+        self.arm_segment1_image = QPixmap("images/arm_1.png") 
         self.arm_segment2_image = QPixmap("images/arm_2_test.png")
-        # Define dimensions of the ROV box
+
         self.rov_width = 214
         self.rov_height = 126
         
-        # Joint positions relative to the ROV
         self.joint1_pos = QPointF(200, 100)
-        # Pitch angle of the ROV (in degrees)
+
         self.pitch_angle = 270
         self.joint1_angle=0
         self.joint2_angle=0
@@ -107,19 +98,13 @@ class RobotArmView(QWidget):
         elif self.pitch_angle>=225 and self.pitch_angle <=315:
             painter.translate(257,183)
         else:
-            painter.translate(257, 113) #200,100 if 45 degres not working
+            painter.translate(257, 113) 
         painter.rotate(self.pitch_angle)
-        painter.translate(-107, -63)  # Adjust position so that the center of the box is at the origin
-
-        
-        # Draw arm segments
-        painter.translate(self.joint1_pos)  # Move to joint1 position 
-        painter.rotate(self.joint1_angle)  # Rotate around joint1
+        painter.translate(-107, -63)  
+        painter.translate(self.joint1_pos)  
+        painter.rotate(self.joint1_angle)  
        
-        
-        # Move to the end of the first arm segment (joint2 position)
         painter.translate(42, -2) 
-        # Rotate around joint2
         painter.rotate(self.joint2_angle)  
         
         painter.drawPixmap(0, -10, 55, 30, self.arm_segment2_image)
@@ -128,19 +113,18 @@ class RobotArmView(QWidget):
         painter.drawPixmap(0, -10, 50, 30, self.arm_segment1_image)
         painter.rotate(-self.joint1_angle)
         painter.translate(-self.joint1_pos)
-        # Draw the ROV box image
         painter.setOpacity(0.5)
         painter.drawPixmap(0, 0, self.rov_width, self.rov_height, self.rov_image)
+
     def update_arm(self, angle1, angle2):
-        # Reset transformation matrix
         self.joint1_angle=-angle1
         self.joint2_angle=angle2
-        
         self.update()
 
     def setRotation(self, angle):
         self.pitch_angle = angle
         self.update()
+
 class MainWindow(QMainWindow):
     display_message_signal = pyqtSignal(str, str)
     def __init__(self):
@@ -158,11 +142,10 @@ class MainWindow(QMainWindow):
         self.display_message_signal.connect(self.display_message_box)
         self.con=sqlite3.connect('rov_logs.db')
         self.c = self.con.cursor()
-        self.log_timer = QTimer(self)  # Create QTimer object
-        self.log_timer.timeout.connect(self.log_data)  # Connect timeout signal to log_data method
+        self.log_timer = QTimer(self) 
+        self.log_timer.timeout.connect(self.log_data)  
         self.log_timer.start(1000) 
 
-        # Create table if not exists
         self.c.execute('''CREATE TABLE IF NOT EXISTS rov_trips
                     (id INTEGER PRIMARY KEY AUTOINCREMENT,
                     start_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -181,6 +164,7 @@ class MainWindow(QMainWindow):
                     leakage STRING)''')
         self.con.commit()
         self.initUI()
+
     def display_message_box(self,title,message):
         QMessageBox.critical(self,title,message)
 
@@ -198,7 +182,6 @@ class MainWindow(QMainWindow):
         self.ui.button_logger.clicked.connect(self.start_logging)
         self.ui.button_front_light.clicked.connect(self.toggle_lights)
         self.ui.button_bottom_light.clicked.connect(self.toggle_lights)
-        #self.ui.button_pinging.clicked.connect(self.start_pinging)
         self.ui.button_power_off.clicked.connect(self.power_mode)
         self.ui.button_cabel.clicked.connect(self.power_mode)
         self.ui.button_battery.clicked.connect(self.power_mode)
@@ -218,10 +201,10 @@ class MainWindow(QMainWindow):
         self.player = QMediaPlayer()
         self.ui.tableWidget.setColumnCount(6)
         self.ui.tableWidget.setHorizontalHeaderLabels(('P','I','D','Verdi','Mål','Ønsket'))
-        self.ui.tableWidget_2.setColumnCount(8)  # Adjust column count as per your database structure
-        self.ui.tableWidget_2.setHorizontalHeaderLabels(['Timestamp', 'temp1','temp2','temp3','temp4','temp5','pressure','leakage'])  # Set column headers
-        self.populate_trip_combobox() # Populate trip combo box initially
-        self.ui.comboBox.currentIndexChanged.connect(self.display_trip)  # Connect combo box index change event
+        self.ui.tableWidget_2.setColumnCount(8) 
+        self.ui.tableWidget_2.setHorizontalHeaderLabels(['Timestamp', 'temp1','temp2','temp3','temp4','temp5','pressure','leakage'])
+        self.populate_trip_combobox()
+        self.ui.comboBox.currentIndexChanged.connect(self.display_trip)
         layout = QVBoxLayout()
         layout.addWidget(self.robot_arm_view,stretch=1)
         self.ui.widget.setLayout(layout)
@@ -237,14 +220,12 @@ class MainWindow(QMainWindow):
                 self.ui.tableWidget.setItem(row, col, item)
         self.ui.tableWidget.setVerticalHeaderLabels(('Pitch','Roll','Yaw','Speed X','Speed y','Speed z'))
         self.ui.button_regulator.clicked.connect(self.regulator_pid)
-        #self.ui.gps_widget.setStyleSheet("background-color:red;")
         self.init_map()
     
     def meters_to_latlon(self,start_lat, start_lon, delta_x, delta_y):
-        # Earth's radius in meters along one degree of latitude
+
         lat_meters = 111139
 
-        # Convert latitude and adjust longitude according to the cosine of the average latitude
         delta_lat = delta_y / lat_meters
         delta_lon = delta_x / (lat_meters * math.cos(math.radians(start_lat)))
 
@@ -254,26 +235,24 @@ class MainWindow(QMainWindow):
         return new_lat, new_lon
     def init_map(self):
         self.start_lat, self.start_lon = 59.092078, 5.910311 
-        self.coordinates_list = [(self.start_lat, self.start_lon)] # Example: Portland, OR
+        self.coordinates_list = [(self.start_lat, self.start_lon)] # Example: Portland
         self.m = folium.Map(location=[self.start_lat, self.start_lon], zoom_start=19)
         folium.Marker([self.start_lat, self.start_lon], popup='Start Point', icon=folium.Icon(color='red')).add_to(self.m)
-        # Save the map as an HTML file
+
         data=io.BytesIO()
         self.m.save(data,close_file=False)
         
-        #Create a QWebEngineView to display the HTML
         self.map_view = QWebEngineView()
 
-        # Load the HTML file in the QWebEngineView
         self.map_view.setHtml(data.getvalue().decode())
-        # Set the QWebEngineView as a widget in gps_widget or replace gps_widget with it
+
         layout = QVBoxLayout()
         layout.addWidget(self.map_view)
         self.ui.gps_widget.setLayout(layout)
     def draw_map(self,x,y):
         
         new_lat, new_lon = self.meters_to_latlon(self.start_lat, self.start_lon, x, y)
-        self.coordinates_list.append((new_lat, new_lon))  # Append the new position to the list
+        self.coordinates_list.append((new_lat, new_lon))
         folium.PolyLine(self.coordinates_list, color="blue", weight=2.5, opacity=1).add_to(self.m)
         data=io.BytesIO()
         self.m.save(data,close_file=False)
@@ -281,9 +260,8 @@ class MainWindow(QMainWindow):
 
     def regulator_pid(self):
         for row in range(self.ui.tableWidget.rowCount()):
-            item = self.ui.tableWidget.item(row, 5)  # Get item from first column
+            item = self.ui.tableWidget.item(row, 5)
             if item is not None:
-                # Set the text of the corresponding item in the second column
                 self.ui.tableWidget.setItem(row, 4, item.clone())
                 self.ui.tableWidget.setItem(row,5,None)
         msg=Kom01Kom02()
@@ -337,10 +315,9 @@ class MainWindow(QMainWindow):
         self.toggle_animation(self.ui.button_controller_node,self.ui.togglebutton_background_5,self.ui.togglebutton_circle_5)
         if self.ui.button_controller_node.isChecked():
             command = ["ros2", "run", "robot_controller", "controller_node"]
-            # Run the command
+
             result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-            # Check if the command was successful
             if result.returncode == 0:
                 print("Command executed successfully!")
                 
@@ -351,13 +328,6 @@ class MainWindow(QMainWindow):
         else:
             msg=Int8()
             self.pub_stop_controller.publish(msg)
-    # def start_pinging(self):
-    #     msg=PingStart()
-    #     if self.ui.button_pinging.isChecked():
-    #         msg.pinging=1
-    #     else:
-    #         msg.pinging=0
-    #     self.pub_ping.publish(msg)
 
     def test_function(self):
         self.draw_map(2,3)
@@ -369,12 +339,11 @@ class MainWindow(QMainWindow):
         self.draw_map(2,2)
         self.draw_map(0,0)
         
-    
-    #only for testing / convert to a callback for angle topic
     def update_arm(self):
         angle1 = self.ui.horizontalSlider_2.value()
         angle2 = self.ui.horizontalSlider_3.value() 
         self.robot_arm_view.update_arm(angle1, angle2)
+
     def drive_mode(self):
         self.ui.button_manual.setStyleSheet(" background-color:rgb(21, 21, 39)")
         self.ui.button_pipeline.setStyleSheet(" background-color:rgb(21, 21, 39)")
@@ -418,26 +387,22 @@ class MainWindow(QMainWindow):
                 
         self.pub_powermode.publish(msg)
             
-        
-        
-        
-        
     def start_logging(self):
-        if self.trip_id is None:  # Start new trip
+        if self.trip_id is None: 
             self.c.execute('''INSERT INTO rov_trips DEFAULT VALUES''')
             self.con.commit()
             self.trip_id = self.c.lastrowid
             self.ui.button_logger.setText('Stop Logger')
             self.ui.button_logger.setStyleSheet("background-color:red;")
             print("Trip started. Trip ID:", self.trip_id)
-        else:  # End current trip
+        else:  
             self.c.execute('''UPDATE rov_trips SET end_timestamp = CURRENT_TIMESTAMP WHERE id = ?''', (self.trip_id,))
             self.con.commit()
             self.trip_id = None
             self.ui.button_logger.setText('Start Logger')
             self.ui.button_logger.setStyleSheet("background-color:green;")
-            
             print("Trip ended.")
+
     def log_data(self):
         if self.trip_id is not None:
             value=float(self.ui.thruster_1.text())
@@ -459,24 +424,24 @@ class MainWindow(QMainWindow):
         self.c.execute('''SELECT id, start_timestamp FROM rov_trips''')
         trips = self.c.fetchall()
         for trip in trips:
-            self.ui.comboBox.addItem(f'Trip {trip[0]} ({trip[1]})')       
+            self.ui.comboBox.addItem(f'Trip {trip[0]} ({trip[1]})')
+
     def display_trip(self):
         selected_index = self.ui.comboBox.currentIndex()
         if selected_index >= 0:
-            trip_id = selected_index + 1  # Trip ID starts from 1, while combo box index starts from 0
+            trip_id = selected_index + 1 
             self.c.execute('''SELECT * FROM rov_logs WHERE trip_id = ?''', (trip_id,))
             rows = self.c.fetchall()
-            self.ui.tableWidget_2.setRowCount(len(rows))  # Set row count based on database content
+            self.ui.tableWidget_2.setRowCount(len(rows))
             for i, row in enumerate(rows):
                 for j, value in enumerate(row[2:], start=2):
                     item = QTableWidgetItem(str(value))
                     self.ui.tableWidget_2.setItem(i, j-2, item) 
+
     def toggle_lights(self):
         sender=self.sender()
-        
         msg=LightStrenght()
         
-       
         if sender==self.ui.button_front_light:
             self.toggle_animation(sender,self.ui.togglebutton_background_1,self.ui.togglebutton_circle_1)
         if sender==self.ui.button_bottom_light:
@@ -497,7 +462,6 @@ class MainWindow(QMainWindow):
         print(msg)
         self.pub_light.publish(msg)
         
-
     def manipulator(self):
         msg=ModeControl()
         
@@ -514,8 +478,6 @@ class MainWindow(QMainWindow):
         else:
             self.toggle_animation(self.ui.button_manipulator,self.ui.togglebutton_background_3,self.ui.togglebutton_circle_3)
 
-        
-            
     def check_ros_connectivity(self):
         process = subprocess.Popen(['ros2','node', 'list'], stdout=subprocess.PIPE)
         stdout = process.communicate()
@@ -548,8 +510,6 @@ class MainWindow(QMainWindow):
         if self.ros_running==True:
             threading.Timer(1, self.check_ros_connectivity).start()
         
-        
-
     def connect_ros(self):
         rclpy.init(args=None)
         self.node = Node('gui_node')
@@ -575,10 +535,12 @@ class MainWindow(QMainWindow):
         self.ui.ping_3.setText(str(msg.ping3))
         self.ui.ping_4.setText(str(msg.ping4))
         self.ui.ping_5.setText(str(msg.ping5))
+
     def battery_callback(self,msg):
         test=0.69
         self.ui.battery_percentage.setText(str(test))
         self.percentage_bar(self.ui.battery_percentage_frame,test)
+
     def thruster_callback(self,msg):
         thruster1=round(msg.verdi_1/100,2)
         thruster2=round(msg.verdi_2/100,2)
@@ -606,7 +568,6 @@ class MainWindow(QMainWindow):
         self.percentage_bar(self.ui.thruster_frame_8,thruster8)
         
     def sensor_callback(self,msg):
-        #internal_temperatures=[msg.temp1,msg.temp2,msg.temp3,msg.temp4]
         internal_temperatures=[30,70,55,42]
         temp_labels=[self.ui.temp_1,self.ui.temp_2,self.ui.temp_3,self.ui.temp_4]
         
@@ -622,7 +583,6 @@ class MainWindow(QMainWindow):
             temp_labels[i].setText(str(internal_temperatures[i]))
         self.ui.label_water_temp.setText(str(0))
 
-    
     def percentage_bar(self, frame,value):
         color="green"
         value=round(value,3)
@@ -647,15 +607,11 @@ class MainWindow(QMainWindow):
         self.ui.label_sway.setText(str(msg.linear.y))
         self.ui.label_heave.setText(str(msg.linear.z))
         
-        
     def controller_callback(self,msg):
-        
         if int(self.ui.connected_controllers.text())> msg.data:
             self.display_message_signal.emit("Warning","Controller disconnected")
         self.ui.connected_controllers.setText(str(msg.data))
         
-            
-
     def closeEvent(self,event):
         if self.node:
             self.node.destroy_node()
@@ -666,8 +622,6 @@ class MainWindow(QMainWindow):
         self.con.close()
         event.accept()
    
-       
-
     def init_rov_node(self):
         self.toggle_animation(self.ui.button_control_rov_node,self.ui.togglebutton_background_4,self.ui.togglebutton_circle_4)
         if self.ui.button_control_rov_node.isChecked():
@@ -680,7 +634,7 @@ class MainWindow(QMainWindow):
             msg.data=1
             self.pub_stop_rov_node.publish(msg)
     def handle_output(self, output):
-        print(output)  # or update GUI
+        print(output)
 
     def handle_error(self, error):
         QMessageBox.critical(self, "SSH Command Error", error)

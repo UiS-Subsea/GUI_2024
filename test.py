@@ -1,35 +1,30 @@
-import rclpy
-from rclpy.node import Node
-from geometry_msgs.msg import Twist
-from std_msgs.msg import String
+import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtCore import QUrl
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 
-
-class ExampleNode(Node):
-
+class MainWindow(QMainWindow):
     def __init__(self):
-        super().__init__("example_node")
-        self.sub=self.create_subscription(String,"mode_control",self.listener_callback,10)
-        self.pub = self.create_publisher(Twist, "ROV_movement", 10)
-        self.get_logger().info("Node is alive")
+        super().__init__()
+        self.initUI()
 
-    def listener_callback(self, msg):
-        print(msg)
+    def initUI(self):
+        self.setGeometry(100, 100, 800, 600)
+        self.setWindowTitle("Simple HTML Test")
 
+        self.web_view = QWebEngineView(self)
+        self.setCentralWidget(self.web_view)
 
-    def publish_message(self):
-        msg= Twist()
-        msg.linear.x=1.0
-        msg.linear.y=0.0
-        msg.linear.z=0.0
-        msg.angular.x=10.0
-        msg.angular.y=0.0
-        msg.angular.z=0.0
-        self.pub.publish(msg)
+        # Simple HTML content
+        
 
-def main(args=None):
-    rclpy.init(args=args)
-    node = ExampleNode()
-    rclpy.spin(node)
-    rclpy.shutdown()
+        # Load the HTML content
+        self.web_view.load(QUrl.fromLocalFile("/home/subsea/topside_2024/GUI_2024/map.html"))
+        print("done")
+
 if __name__ == "__main__":
-    main()
+    app = QApplication(sys.argv)
+    win = MainWindow()
+    win.show()
+    sys.exit(app.exec_())
+

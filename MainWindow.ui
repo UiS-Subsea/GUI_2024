@@ -92,8 +92,8 @@ border-radius:15px;
         <widget class="QPushButton" name="button_logger">
          <property name="geometry">
           <rect>
-           <x>100</x>
-           <y>940</y>
+           <x>90</x>
+           <y>910</y>
            <width>121</width>
            <height>51</height>
           </rect>
@@ -125,7 +125,7 @@ border: 2px solid green;
           <enum>QFrame::NoFrame</enum>
          </property>
          <property name="text">
-          <string>-------</string>
+          <string>0</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -150,7 +150,7 @@ border: 2px solid green;
           <enum>QFrame::NoFrame</enum>
          </property>
          <property name="text">
-          <string>-------</string>
+          <string>0</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -175,7 +175,7 @@ border: 2px solid green;
           <enum>QFrame::NoFrame</enum>
          </property>
          <property name="text">
-          <string>-------</string>
+          <string>0</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -200,7 +200,7 @@ border: 2px solid green;
           <enum>QFrame::NoFrame</enum>
          </property>
          <property name="text">
-          <string>-------</string>
+          <string>0</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -228,195 +228,11 @@ border: 2px solid green;
           <number>-1</number>
          </property>
         </widget>
-        <widget class="QFrame" name="thruster_frame_1">
-         <property name="geometry">
-          <rect>
-           <x>120</x>
-           <y>160</y>
-           <width>47</width>
-           <height>47</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">border:none; background-color:rgb(99,102,108);
-</string>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <widget class="QLabel" name="thruster_1">
-          <property name="geometry">
-           <rect>
-            <x>3</x>
-            <y>3</y>
-            <width>41</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color:rgb(21,21,39);
-border:none;</string>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="text">
-           <string>0</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </widget>
-        <widget class="QFrame" name="thruster_frame_2">
-         <property name="geometry">
-          <rect>
-           <x>510</x>
-           <y>160</y>
-           <width>47</width>
-           <height>47</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">border:none; background-color:rgb(99,102,108);
-</string>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <widget class="QLabel" name="thruster_2">
-          <property name="geometry">
-           <rect>
-            <x>3</x>
-            <y>3</y>
-            <width>41</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color:rgb(21,21,39);
-border:none;</string>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="text">
-           <string>0</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </widget>
-        <widget class="QFrame" name="thruster_frame_3">
-         <property name="geometry">
-          <rect>
-           <x>120</x>
-           <y>380</y>
-           <width>47</width>
-           <height>47</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">border:none; background-color:rgb(99,102,108);
-</string>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <widget class="QLabel" name="thruster_3">
-          <property name="geometry">
-           <rect>
-            <x>3</x>
-            <y>3</y>
-            <width>41</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color:rgb(21,21,39);
-border:none;</string>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="text">
-           <string>0</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </widget>
-        <widget class="QFrame" name="thruster_frame_4">
-         <property name="geometry">
-          <rect>
-           <x>510</x>
-           <y>380</y>
-           <width>47</width>
-           <height>47</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">border:none; background-color:rgb(99,102,108);
-</string>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <widget class="QLabel" name="thruster_4">
-          <property name="geometry">
-           <rect>
-            <x>3</x>
-            <y>3</y>
-            <width>41</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color:rgb(21,21,39);
-border:none;</string>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="text">
-           <string>0</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </widget>
         <widget class="QFrame" name="thruster_frame_5">
          <property name="geometry">
           <rect>
-           <x>200</x>
-           <y>190</y>
+           <x>120</x>
+           <y>160</y>
            <width>47</width>
            <height>47</height>
           </rect>
@@ -461,8 +277,8 @@ border:none;</string>
         <widget class="QFrame" name="thruster_frame_6">
          <property name="geometry">
           <rect>
-           <x>420</x>
-           <y>190</y>
+           <x>510</x>
+           <y>160</y>
            <width>47</width>
            <height>47</height>
           </rect>
@@ -504,10 +320,56 @@ border:none;</string>
           </property>
          </widget>
         </widget>
+        <widget class="QFrame" name="thruster_frame_8">
+         <property name="geometry">
+          <rect>
+           <x>120</x>
+           <y>380</y>
+           <width>47</width>
+           <height>47</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none; background-color:rgb(99,102,108);
+</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QLabel" name="thruster_8">
+          <property name="geometry">
+           <rect>
+            <x>3</x>
+            <y>3</y>
+            <width>41</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:rgb(21,21,39);
+border:none;</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </widget>
         <widget class="QFrame" name="thruster_frame_7">
          <property name="geometry">
           <rect>
-           <x>210</x>
+           <x>510</x>
            <y>380</y>
            <width>47</width>
            <height>47</height>
@@ -550,7 +412,145 @@ border:none;</string>
           </property>
          </widget>
         </widget>
-        <widget class="QFrame" name="thruster_frame_8">
+        <widget class="QFrame" name="thruster_frame_1">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>190</y>
+           <width>47</width>
+           <height>47</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none; background-color:rgb(99,102,108);
+</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QLabel" name="thruster_1">
+          <property name="geometry">
+           <rect>
+            <x>3</x>
+            <y>3</y>
+            <width>41</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:rgb(21,21,39);
+border:none;</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="thruster_frame_2">
+         <property name="geometry">
+          <rect>
+           <x>420</x>
+           <y>190</y>
+           <width>47</width>
+           <height>47</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none; background-color:rgb(99,102,108);
+</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QLabel" name="thruster_2">
+          <property name="geometry">
+           <rect>
+            <x>3</x>
+            <y>3</y>
+            <width>41</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:rgb(21,21,39);
+border:none;</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="thruster_frame_4">
+         <property name="geometry">
+          <rect>
+           <x>210</x>
+           <y>380</y>
+           <width>47</width>
+           <height>47</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none; background-color:rgb(99,102,108);
+</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QLabel" name="thruster_4">
+          <property name="geometry">
+           <rect>
+            <x>3</x>
+            <y>3</y>
+            <width>41</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:rgb(21,21,39);
+border:none;</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="thruster_frame_3">
          <property name="geometry">
           <rect>
            <x>410</x>
@@ -569,7 +569,7 @@ border:none;</string>
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QLabel" name="thruster_8">
+         <widget class="QLabel" name="thruster_3">
           <property name="geometry">
            <rect>
             <x>3</x>
@@ -627,7 +627,7 @@ border:none;</string>
           <rect>
            <x>80</x>
            <y>650</y>
-           <width>191</width>
+           <width>221</width>
            <height>161</height>
           </rect>
          </property>
@@ -645,6 +645,13 @@ border:none;</string>
              <widget class="QLabel" name="label_33">
               <property name="text">
                <string>Dybde:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_44">
+              <property name="text">
+               <string>Distanse til bunn:</string>
               </property>
              </widget>
             </item>
@@ -674,6 +681,19 @@ border:none;</string>
             </item>
             <item>
              <widget class="QLabel" name="label_depth">
+              <property name="styleSheet">
+               <string notr="true">border:none;</string>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_distance_to_bottom">
               <property name="styleSheet">
                <string notr="true">border:none;</string>
               </property>
@@ -766,7 +786,7 @@ border:none;</string>
           <string>Spenning:</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_16">
+        <widget class="QLabel" name="label_bat_voltage">
          <property name="geometry">
           <rect>
            <x>520</x>
@@ -779,7 +799,7 @@ border:none;</string>
           <string notr="true">border:none;</string>
          </property>
          <property name="text">
-          <string>0V</string>
+          <string>0</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -857,6 +877,38 @@ border:none;</string>
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
+        <widget class="QLabel" name="label_46">
+         <property name="geometry">
+          <rect>
+           <x>380</x>
+           <y>760</y>
+           <width>131</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Strøm:</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_bat_current">
+         <property name="geometry">
+          <rect>
+           <x>520</x>
+           <y>760</y>
+           <width>41</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
         <zorder>rov_img</zorder>
         <zorder>label_2</zorder>
         <zorder>button_logger</zorder>
@@ -864,23 +916,25 @@ border:none;</string>
         <zorder>temp_2</zorder>
         <zorder>temp_3</zorder>
         <zorder>temp_4</zorder>
-        <zorder>thruster_frame_1</zorder>
-        <zorder>thruster_frame_2</zorder>
-        <zorder>thruster_frame_3</zorder>
-        <zorder>thruster_frame_4</zorder>
         <zorder>thruster_frame_5</zorder>
         <zorder>thruster_frame_6</zorder>
-        <zorder>thruster_frame_7</zorder>
         <zorder>thruster_frame_8</zorder>
+        <zorder>thruster_frame_7</zorder>
+        <zorder>thruster_frame_1</zorder>
+        <zorder>thruster_frame_2</zorder>
+        <zorder>thruster_frame_4</zorder>
+        <zorder>thruster_frame_3</zorder>
         <zorder>label_28</zorder>
         <zorder>horizontalLayoutWidget_3</zorder>
         <zorder>horizontalSlider_3</zorder>
         <zorder>horizontalSlider_2</zorder>
         <zorder>label_14</zorder>
         <zorder>label_15</zorder>
-        <zorder>label_16</zorder>
+        <zorder>label_bat_voltage</zorder>
         <zorder>battery_percentage_frame</zorder>
         <zorder>label_30</zorder>
+        <zorder>label_46</zorder>
+        <zorder>label_bat_current</zorder>
        </widget>
        <widget class="QFrame" name="frame_6">
         <property name="geometry">
@@ -922,7 +976,7 @@ border: 2px solid rgb(99, 102, 108);</string>
           <string notr="true">background-color:rgb(21,21,39);</string>
          </property>
          <property name="text">
-          <string>Control Panel</string>
+          <string>Hovedfunksjoner</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -974,7 +1028,7 @@ border: 2px solid rgb(99, 102, 108);</string>
           <property name="geometry">
            <rect>
             <x>90</x>
-            <y>74</y>
+            <y>60</y>
             <width>89</width>
             <height>31</height>
            </rect>
@@ -985,7 +1039,7 @@ color:white
 ;</string>
           </property>
           <property name="text">
-           <string>Manual</string>
+           <string>Manuell</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -998,13 +1052,29 @@ color:white
           <property name="geometry">
            <rect>
             <x>90</x>
-            <y>124</y>
+            <y>100</y>
             <width>89</width>
             <height>31</height>
            </rect>
           </property>
           <property name="text">
-           <string>Pipeline</string>
+           <string>Rørledning</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="button_structure">
+          <property name="geometry">
+           <rect>
+            <x>90</x>
+            <y>140</y>
+            <width>89</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Struktur</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -1014,7 +1084,7 @@ color:white
           <property name="geometry">
            <rect>
             <x>90</x>
-            <y>174</y>
+            <y>180</y>
             <width>89</width>
             <height>31</height>
            </rect>
@@ -1062,7 +1132,7 @@ color:white
            </font>
           </property>
           <property name="text">
-           <string>Lights</string>
+           <string>Lys</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1078,10 +1148,13 @@ color:white
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">border:none;</string>
+           <string notr="true">border:none;color:grey;</string>
           </property>
           <property name="maximum">
-           <number>255</number>
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>0</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -1103,7 +1176,7 @@ color:white
            <string notr="true">border:none;</string>
           </property>
           <property name="maximum">
-           <number>255</number>
+           <number>100</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -1125,7 +1198,7 @@ color:white
            <string notr="true">border:none;</string>
           </property>
           <property name="text">
-           <string>Front:</string>
+           <string>Foran:</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1144,7 +1217,7 @@ color:white
            <string notr="true">border:none;</string>
           </property>
           <property name="text">
-           <string>Bottom:</string>
+           <string>Under:</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1463,7 +1536,7 @@ QLabel{border:none}</string>
            </font>
           </property>
           <property name="text">
-           <string>Startup</string>
+           <string>ROS</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1842,7 +1915,7 @@ QLabel{border:none;}
 background-color:rgb(21,21,39);</string>
          </property>
          <property name="text">
-          <string>Connections</string>
+          <string>Tilkoblinger</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -1861,24 +1934,11 @@ background-color:rgb(21,21,39);</string>
           <string>Status:</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_25">
-         <property name="geometry">
-          <rect>
-           <x>120</x>
-           <y>160</y>
-           <width>181</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Connected controllers:</string>
-         </property>
-        </widget>
         <widget class="QLabel" name="connected_controllers">
          <property name="geometry">
           <rect>
-           <x>290</x>
-           <y>170</y>
+           <x>390</x>
+           <y>260</y>
            <width>67</width>
            <height>17</height>
           </rect>
@@ -1899,134 +1959,148 @@ background-color:rgb(21,21,39);</string>
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
-        <widget class="QLabel" name="label_38">
+        <widget class="QWidget" name="horizontalLayoutWidget_4">
          <property name="geometry">
           <rect>
            <x>50</x>
+           <y>260</y>
+           <width>160</width>
+           <height>113</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <widget class="QLabel" name="label_38">
+              <property name="text">
+               <string>Regulering</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_39">
+              <property name="text">
+               <string>Sensor</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_40">
+              <property name="text">
+               <string>Manipulator</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_41">
+              <property name="text">
+               <string>Kraft</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_42">
+              <property name="text">
+               <string>Batteri</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_10">
+            <item>
+             <widget class="QLabel" name="ping_1">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="ping_2">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="ping_3">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="ping_4">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="ping_5">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QLabel" name="label_47">
+         <property name="geometry">
+          <rect>
+           <x>60</x>
            <y>210</y>
-           <width>41</width>
-           <height>17</height>
+           <width>141</width>
+           <height>31</height>
           </rect>
          </property>
-         <property name="text">
-          <string>ping1</string>
+         <property name="font">
+          <font>
+           <pointsize>13</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
          </property>
-        </widget>
-        <widget class="QLabel" name="label_39">
-         <property name="geometry">
-          <rect>
-           <x>50</x>
-           <y>240</y>
-           <width>41</width>
-           <height>17</height>
-          </rect>
+         <property name="styleSheet">
+          <string notr="true">border:2px solid rgb(99, 102, 108);
+background-color:rgb(21,21,39);</string>
          </property>
          <property name="text">
-          <string>ping2</string>
+          <string>Ping</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
-        <widget class="QLabel" name="label_40">
+        <widget class="QLabel" name="label_48">
          <property name="geometry">
           <rect>
-           <x>50</x>
-           <y>270</y>
-           <width>41</width>
-           <height>17</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>ping3</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_41">
-         <property name="geometry">
-          <rect>
-           <x>50</x>
-           <y>300</y>
-           <width>41</width>
-           <height>17</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>ping4</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_42">
-         <property name="geometry">
-          <rect>
-           <x>50</x>
-           <y>330</y>
-           <width>41</width>
-           <height>17</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>ping5</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="ping_1">
-         <property name="geometry">
-          <rect>
-           <x>160</x>
+           <x>350</x>
            <y>210</y>
-           <width>67</width>
-           <height>17</height>
+           <width>141</width>
+           <height>31</height>
           </rect>
          </property>
-         <property name="text">
-          <string/>
+         <property name="font">
+          <font>
+           <pointsize>13</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
          </property>
-        </widget>
-        <widget class="QLabel" name="ping_2">
-         <property name="geometry">
-          <rect>
-           <x>160</x>
-           <y>240</y>
-           <width>67</width>
-           <height>17</height>
-          </rect>
+         <property name="styleSheet">
+          <string notr="true">border:2px solid rgb(99, 102, 108);
+background-color:rgb(21,21,39);</string>
          </property>
          <property name="text">
-          <string/>
+          <string>Kontrollere</string>
          </property>
-        </widget>
-        <widget class="QLabel" name="ping_3">
-         <property name="geometry">
-          <rect>
-           <x>160</x>
-           <y>270</y>
-           <width>67</width>
-           <height>17</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QLabel" name="ping_4">
-         <property name="geometry">
-          <rect>
-           <x>160</x>
-           <y>300</y>
-           <width>67</width>
-           <height>17</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QLabel" name="ping_5">
-         <property name="geometry">
-          <rect>
-           <x>160</x>
-           <y>330</y>
-           <width>67</width>
-           <height>17</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </widget>
@@ -2078,7 +2152,7 @@ QVerticalLayout{
           </font>
          </property>
          <property name="text">
-          <string>Navigation</string>
+          <string>Navigasjon</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -2676,6 +2750,387 @@ border: 2px solid rgb(99, 102, 108);</string>
          </property>
          <property name="text">
           <string>Open settings</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QFrame" name="frame_18">
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>680</y>
+          <width>621</width>
+          <height>361</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border:2px solid grey;border-radius:15px</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="label_16">
+         <property name="geometry">
+          <rect>
+           <x>70</x>
+           <y>50</y>
+           <width>111</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Spenning:</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_45">
+         <property name="geometry">
+          <rect>
+           <x>380</x>
+           <y>50</y>
+           <width>111</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Temp:</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_1">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>110</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_2">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>140</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_3">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>170</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_4">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>200</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_5">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>230</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_6">
+         <property name="geometry">
+          <rect>
+           <x>150</x>
+           <y>110</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_7">
+         <property name="geometry">
+          <rect>
+           <x>150</x>
+           <y>140</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_8">
+         <property name="geometry">
+          <rect>
+           <x>150</x>
+           <y>170</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_9">
+         <property name="geometry">
+          <rect>
+           <x>150</x>
+           <y>200</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_10">
+         <property name="geometry">
+          <rect>
+           <x>150</x>
+           <y>230</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_temp_1">
+         <property name="geometry">
+          <rect>
+           <x>420</x>
+           <y>120</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_temp_2">
+         <property name="geometry">
+          <rect>
+           <x>420</x>
+           <y>150</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_temp_3">
+         <property name="geometry">
+          <rect>
+           <x>420</x>
+           <y>180</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_temp_4">
+         <property name="geometry">
+          <rect>
+           <x>420</x>
+           <y>210</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_temp_5">
+         <property name="geometry">
+          <rect>
+           <x>420</x>
+           <y>240</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_11">
+         <property name="geometry">
+          <rect>
+           <x>210</x>
+           <y>110</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_12">
+         <property name="geometry">
+          <rect>
+           <x>210</x>
+           <y>140</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_13">
+         <property name="geometry">
+          <rect>
+           <x>210</x>
+           <y>170</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_14">
+         <property name="geometry">
+          <rect>
+           <x>210</x>
+           <y>190</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_15">
+         <property name="geometry">
+          <rect>
+           <x>210</x>
+           <y>210</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cell_voltage_16">
+         <property name="geometry">
+          <rect>
+           <x>210</x>
+           <y>240</y>
+           <width>67</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="text">
+          <string>0</string>
          </property>
         </widget>
        </widget>

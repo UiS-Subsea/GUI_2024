@@ -1,6 +1,6 @@
 # GUI 2024 - UIS SUBSEA
 
-This repository decribes the process of running the GUI that monitors this years ROV, Draugen (Not the name of a TIX banger).
+This repository decribes the process of running the GUI that monitors this years ROV, Draugen.
 
 # Requirements
 
